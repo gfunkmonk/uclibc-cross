@@ -42,14 +42,14 @@ jobs:
           - aarch64_be-unknown-linux-uclibc
           - alphaev56-unknown-linux-uclibc
           - alphaev67-unknown-linux-uclibc
-          - arm-unknown-linux-uclibceabi
-          - arm-unknown-linux-uclibceabihf
-          - armv4t-unknown-linux-uclibceabi
-          - armv5-unknown-linux-uclibceabi
-          - armv6-unknown-linux-uclibceabi
-          - armv6-unknown-linux-uclibceabihf
-          - armv7-unknown-linux-uclibceabi
-          - armv7-unknown-linux-uclibceabihf
+          - arm-unknown-linux-uclibcgnueabi
+          - arm-unknown-linux-uclibcgnueabihf
+          - armv4t-unknown-linux-uclibcgnueabi
+          - armv5-unknown-linux-uclibcgnueabi
+          - armv6-unknown-linux-uclibcgnueabi
+          - armv6-unknown-linux-uclibcgnueabihf
+          - armv7-unknown-linux-uclibcgnueabi
+          - armv7-unknown-linux-uclibcgnueabihf
           - hppa-unknown-linux-uclibc
           - i486-unknown-linux-uclibc
           - i586-unknown-linux-uclibc
