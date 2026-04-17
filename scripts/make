@@ -2,7 +2,16 @@
 
 set -e
 
+if [[ $# -lt 1 || -z "$1" ]]; then
+    echo "Usage: $0 <target>" >&2
+    echo "Example: $0 x86_64-unknown-linux-uclibc" >&2
+    exit 1
+fi
 TARGET=$1
+if [[ ! -d "targets/${TARGET}" ]]; then
+    echo "Error: target '${TARGET}' not found in targets/" >&2
+    exit 1
+fi
 
 # packages
 sudo apt-get update
@@ -39,9 +48,9 @@ sudo apt-get install -y --no-install-recommends \
 pushd builder
 git reset --hard HEAD
 git clean -fd
-for i in ../targets/${TARGET}/*; do
+for i in ../targets/"${TARGET}"/*; do
     if [[ $i == *.patch ]]; then
-        patch -Np1 -i $i
+        patch -Np1 -i "$i"
     fi
 done
 popd
@@ -53,14 +62,17 @@ sudo rm -rf /opt/ct-ng
 pushd builder
 ./bootstrap
 ./configure --prefix=/opt/ct-ng
-make -j`nproc`
+make -j"$(nproc)"
 sudo make install
 popd
 
 # build
 rm -rf build
 mkdir -p build
-cp targets/${TARGET}/config build/.config
+cp targets/"${TARGET}"/config build/.config
+# Configure tarballs directory for download caching
+echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
+echo 'CT_SAVE_TARBALLS=y' >> build/.config
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
 /opt/ct-ng/bin/ct-ng build
@@ -70,7 +82,7 @@ popd
 # ct-ng may normalize the target triple (e.g. uclibceabi -> uclibcgnueabi),
 # so read the actual CT_TARGET from the build config instead of using $TARGET
 CT_ACTUAL=$(sed -n 's/^CT_TARGET="\(.*\)"/\1/p' build/.config)
-sudo mv /opt/x-tools/${CT_ACTUAL} ${TARGET}
-sudo chown -R root:root ${TARGET}
-sudo tar -cJvf ${TARGET}.tar.xz ${TARGET}
-sudo sha256sum ${TARGET}.tar.xz | awk '{ print $1 }' > ${TARGET}.tar.xz.sha256
+sudo mv /opt/x-tools/"${TARGET}" .
+sudo chown -R root:root "${TARGET}"
+sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"
+sudo sha256sum "${TARGET}".tar.xz | awk '{ print $1 }' > "${TARGET}".tar.xz.sha256
