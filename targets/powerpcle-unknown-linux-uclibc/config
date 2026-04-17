@@ -19,3 +19,6 @@ CT_LINKER_MOLD=y
 #CT_TARGET_CFLAGS="-msoft-float -mno-altivec -m32 -mlittle-endian -fno-stack-protector -mno-multiple -mno-string"
 #CT_ARCH_CPU="powerpc"
 #CT_ASFLAGS="-mno-multiple"
+CT_PARALLEL_JOBS=4
+CT_LOG_ALL=y
+CT_LOG_LEVEL_MAX="ALL"
