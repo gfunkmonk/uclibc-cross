@@ -10,7 +10,7 @@
 +
 +--- a/ldso/include/dl-syscall.h
 ++++ b/ldso/include/dl-syscall.h
-+@@ -263,10 +263,14 @@
++@@ -263,11 +263,15 @@
 + #ifdef __UCLIBC_HAS_SSP__
 + # include <sys/time.h>
 +-# define __NR__dl_gettimeofday __NR_gettimeofday

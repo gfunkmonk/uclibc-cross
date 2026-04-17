@@ -8,21 +8,21 @@
 +
 +--- a/ldso/ldso/powerpc/dl-startup.h
 ++++ b/ldso/ldso/powerpc/dl-startup.h
-+@@ -14,7 +14,7 @@ __asm__(
-+     "\tmr\t3,1\n" /* Pass SP to _dl_start in r3 */
-+     "\tli\t0,0\n"
-+     "\tstwu\t1,-16(1)\n" /* Make room on stack for _dl_start to store LR */
-+     "\tstw\t0,0(1)\n" /* Clear Stack frame */
-+-    "\tbl\t_dl_start@local\n" /* Perform relocation */
-++    "\tbl\t_dl_start\n" /* Perform relocation */
-+     /*  Save the address of the apps entry point in CTR register */
-+     "\tmtctr\t3\n" /* application entry point */
++@@ -14,7 +14,7 @@
++    "\tmr\t3,1\n" /* Pass SP to _dl_start in r3 */
++    "\tli\t0,0\n"
++    "\tstwu\t1,-16(1)\n" /* Make room on stack for _dl_start to store LR */
++    "\tstw\t0,0(1)\n" /* Clear Stack frame */
++-   "\tbl\t_dl_start@local\n" /* Perform relocation */
+++   "\tbl\t_dl_start\n" /* Perform relocation */
++    /* Save the address of the apps entry point in CTR register */
++    "\tmtctr\t3\n" /* application entry point */
 + #ifdef HAVE_ASM_PPC_REL16
-+@@ -23,7 +23,7 @@ __asm__(
-+     "\taddis\t31,31,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
-+     "\taddi\t31,31,_GLOBAL_OFFSET_TABLE_-1b@l\n"
++@@ -23,7 +23,7 @@
++    "\taddis\t31,31,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
++    "\taddi\t31,31,_GLOBAL_OFFSET_TABLE_-1b@l\n"
 + #else
-+-    "\tbl\t_GLOBAL_OFFSET_TABLE_-4@local\n" /*  Put our GOT pointer in r31, */
-++    "\tbl\t_GLOBAL_OFFSET_TABLE_-4\n" /*  Put our GOT pointer in r31, */
-+     "\tmflr\t31\n"
++-   "\tbl\t_GLOBAL_OFFSET_TABLE_-4@local\n" /* Put our GOT pointer in r31, */
+++   "\tbl\t_GLOBAL_OFFSET_TABLE_-4\n" /* Put our GOT pointer in r31, */
++    "\tmflr\t31\n"
 + #endif

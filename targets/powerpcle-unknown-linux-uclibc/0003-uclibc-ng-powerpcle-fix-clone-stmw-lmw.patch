@@ -34,7 +34,7 @@
 + 
 + 	/* Set up stack frame for child.  */
 + 	clrrwi	r4,r4,4
-+@@ -101,10 +112,20 @@ .Lparent:
++@@ -101,10 +112,21 @@ .Lparent:
 + .Lparent:
 + 	/* Parent.  Restore registers & return.  */
 + #ifndef __ASSUME_FIXED_CLONE_SYSCALL
