@@ -1,0 +1,228 @@
+name: Stuff
+'on':
+  workflow_dispatch:
+    inputs:
+      freespace:
+        description: Run F̳r̳e̳e̳ ̳D̳i̳s̳k̳ ̳S̳p̳a̳c̳e̳
+        required: true
+        type: boolean
+        default: false
+      swapspace:
+        description: Add Swap ̳S̳p̳a̳c̳e̳
+        required: true
+        type: boolean
+        default: false
+      sshserver:
+        description: Run SSH Server before build
+        required: true
+        type: boolean
+        default: false
+      make_release:
+        description: GitHub Release?
+        type: boolean
+        default: false
+      release_name:
+        description: Release name?
+        type: string
+        default: ''
+concurrency:
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          #- aarch64-unknown-linux-gnu
+          - aarch64_be-unknown-linux-gnu
+          #- alphaev56-unknown-linux-gnu
+          #- alphaev67-unknown-linux-gnu
+          #- arm-unknown-linux-gnueabi
+          #- arm-unknown-linux-gnueabihf
+          #- armv4t-unknown-linux-gnueabi
+          #- armv5-unknown-linux-gnueabi
+          #- armv6-unknown-linux-gnueabi
+          #- armv6-unknown-linux-gnueabihf
+          #- armv7-unknown-linux-gnueabi
+          #- armv7-unknown-linux-gnueabihf
+          #- hppa-unknown-linux-gnu
+          #- i486-unknown-linux-gnu
+          #- i586-unknown-linux-gnu
+          #- i686-unknown-linux-gnu
+          #- loongarch64-unknown-linux-gnu
+          #- m68k-unknown-linux-gnu
+          #- microblaze-xilinx-linux-gnu
+          #- microblazeel-xilinx-linux-gnu
+          #- mips-unknown-linux-gnu
+          #- mips-unknown-linux-gnusf
+          #- mips64-unknown-linux-gnu
+          #- mips64el-unknown-linux-gnu
+          #- mipsel-unknown-linux-gnu
+          #- mipsel-unknown-linux-gnusf
+          #- or1k-unknown-linux-gnu
+          #- powerpc-unknown-linux-gnu
+          #- powerpc-unknown-linux-gnusf
+          #- powerpc64-unknown-linux-gnu
+          #- powerpc64le-unknown-linux-gnu
+          #- powerpcle-unknown-linux-gnu
+          #- powerpcle-unknown-linux-gnusf
+          #- riscv32-unknown-linux-gnu
+          #- riscv64-unknown-linux-gnu
+          #- s390-ibm-linux-gnu
+          #- s390x-ibm-linux-gnu
+          #- sh4-multilib-linux-gnu
+          #- sparc-unknown-linux-gnu
+          #- sparc64-unknown-linux-gnu
+          #- x86_64-unknown-linux-gnu
+    steps:
+      - if: '${{ inputs.freespace }}'
+        name: Free Up Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          swap-storage: false
+          large-packages: true
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: false
+          docker-images: true
+      - if: '${{ inputs.swapspace }}'
+        name: Add Swap Space for Build
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 3
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          submodules: true
+      - name: CCACHE Shit
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -y update
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-utils
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install ccache
+
+          cat >> $GITHUB_ENV << 'EOF'
+          CCACHE_SLOPPINESS=file_macro,locale,time_macros
+          CCACHE_NOHASHDIR=true
+          CCACHE_COMPRESS=1
+          CCACHE_COMPRESSLEVEL=6
+          CCACHE_DEPEND=true
+          CCACHE_NOFILECLONE=true
+          CCACHE_NOHARDLINK=true
+          CCACHE_INODECACHE=true
+          CCACHE_NLEVELS=4
+          CCACHE_COMPILERCHECK=content
+          CCACHE_DIRECT=true
+          EOF
+
+          # Setup CCACHE Dir
+          sudo mkdir -p /mnt/ccache
+          sudo chown -R $USER:$USER /mnt/ccache
+          echo "CCACHE_DIR=/mnt/ccache" >> $GITHUB_ENV
+          echo "CCACHE Dir Set!"
+          # Setup tarballs dir for download caching
+          sudo mkdir -p /mnt/tarballs
+          sudo chown -R $USER:$USER /mnt/tarballs
+          df -h
+          echo "CCACHE Environment set!"
+      - name: Enable the CCACHE
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          create-symlink: 'true'
+          key: 'ccache-${{ runner.os }}-${{ matrix.target }}'
+          restore-keys: |
+            ccache-${{ runner.os }}-
+          max-size: 5000MB
+          verbose: 2
+          save: true
+      - name: Restore tarballs cache
+        uses: actions/cache/restore@v5
+        with:
+          path: /mnt/tarballs
+          key: >-
+            tarballs-${{ runner.os }}-${{ matrix.target }}-${{
+            hashFiles(format('targets/{0}/config', matrix.target)) }}
+          restore-keys: |
+            tarballs-${{ runner.os }}-${{ matrix.target }}-
+            tarballs-${{ runner.os }}-
+      - if: '${{ inputs.sshserver }}'
+        name: SSH Server-ing
+        uses: valeriangalliat/action-sshd-cloudflared@v4
+      - name: Build
+        run: |
+          sudo rm -rf /opt/*
+          ./scripts/make ${{ matrix.target }}
+      - name: Save tarballs cache
+        uses: actions/cache/save@v5
+        if: always()
+        with:
+          path: /mnt/tarballs
+          key: >-
+            tarballs-${{ runner.os }}-${{ matrix.target }}-${{
+            hashFiles(format('targets/{0}/config', matrix.target)) }}
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: '${{ matrix.target }}.tar.xz'
+          path: '${{ matrix.target }}.tar.xz'
+          if-no-files-found: error
+          retention-days: 1
+      - name: Upload checksum
+        uses: actions/upload-artifact@v7
+        with:
+          name: '${{ matrix.target }}.tar.xz.sha256'
+          path: '${{ matrix.target }}.tar.xz.sha256'
+          if-no-files-found: error
+          retention-days: 1
+  release:
+    name: Release
+    runs-on: ubuntu-22.04
+    needs:
+      - build
+    if: |
+      !cancelled() && github.event.inputs.make_release == 'true'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: release
+          pattern: '*.tar.*'
+          merge-multiple: true
+      - name: Generate checksums
+        run: |
+          echo "| Filename | Sha256sum |" > RELEASE.md
+          echo "| -------- | --------- |" >> RELEASE.md
+          for i in release/*.sha256; do
+            echo "| $(basename $i .sha256) | $(cat $i) |" >> RELEASE.md
+          done
+      - if: '${{ inputs.release_name != '''' && inputs.make_release }}'
+        name: Create Release
+        uses: xiechangan123/action-gh-release@master
+        with:
+          name: '${{ inputs.release_name }}'
+          tag_name: '${{ inputs.release_name }}'
+          prerelease: false
+          draft: false
+          generate_release_notes: false
+          make_latest: false
+          files: release/*-*-*.tar.*
+          body_path: RELEASE.md
+      - name: Finalize Release
+        env:
+          GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: |
+          # The action-gh-release step above handles most files,
+          # but this ensures the body/notes are updated correctly.
+          gh release edit "${{ inputs.release_name }}" --notes-file RELEASE.md
