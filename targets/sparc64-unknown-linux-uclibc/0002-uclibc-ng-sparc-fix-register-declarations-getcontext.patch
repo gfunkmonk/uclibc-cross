@@ -1,0 +1,13 @@
+--- /dev/null
+@@ -0,0 +1,18 @@
+sparc: add .register pseudo-op declarations for global registers in getcontext.S
+Newer binutils require .register directives when using global registers
+%%g2 and %%g3 in SPARC assembly. Add the declarations before ENTRY to
+avoid "detected global register use not covered by .register pseudo-op"
+errors on sparc64 (lines 49-50 of getcontext.S).
+--- a/libc/sysdeps/linux/sparc/getcontext.S
+@@ -31,6 +31,9 @@ along with the GNU C Library; if not, see
+   other than the PRESERVED state.  */
+ 
+ 
+ ENTRY(__getcontext)
