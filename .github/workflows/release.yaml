@@ -54,7 +54,6 @@ jobs:
           - i486-unknown-linux-uclibc
           - i586-unknown-linux-uclibc
           - i686-unknown-linux-uclibc
-          - loongarch64-unknown-linux-uclibc
           - m68k-unknown-linux-uclibc
           - microblaze-xilinx-linux-uclibc
           - microblazeel-xilinx-linux-uclibc
