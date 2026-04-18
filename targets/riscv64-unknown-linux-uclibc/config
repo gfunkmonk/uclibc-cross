@@ -18,5 +18,5 @@ CT_BINUTILS_V_2_44=y
 # Ensure these are set in your target configs
 CT_GCC_LTO=n
 CT_LIBC_UCLIBC_DEBUG_LEVEL_0=y
-CT_LOG_EXTRA=y
-CT_LOG_LEVEL_MAX="EXTRA"
+CT_LOG_ALL=y
+CT_LOG_LEVEL_MAX="ALL"

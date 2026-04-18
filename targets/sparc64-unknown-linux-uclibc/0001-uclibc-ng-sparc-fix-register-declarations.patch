@@ -1,6 +1,6 @@
---- a/packages/uClibc-ng/1.0.57/0001-sparc-fix-register-declarations-in-clone.patch
-+++ b/packages/uClibc-ng/1.0.57/0001-sparc-fix-register-declarations-in-clone.patch
-@@ -0,0 +1,15 @@
+--- a/packages/uClibc-ng/1.0.57/0001-uclibc-ng-sparc-fix-register-declarations.patch
++++ b/packages/uClibc-ng/1.0.57/0001-uclibc-ng-sparc-fix-register-declarations.patch
+@@ -0,0 +1,18 @@
 +sparc: add .register pseudo-op declarations for global registers
 +
 +Newer binutils require .register directives when using global registers
