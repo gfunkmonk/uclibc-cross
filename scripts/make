@@ -63,7 +63,7 @@ make -j"$(nproc)"
 sudo make install
 popd
 
-EXTRA_CT_NG_ARGS=""
+#EXTRA_CT_NG_ARGS=""
 
 case "${TARGET}" in
     sparc64-unknown-linux-uclibc)
@@ -103,7 +103,7 @@ echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
-/opt/ct-ng/bin/ct-ng build."$(nproc)" "${EXTRA_CT_NG_ARGS}"
+/opt/ct-ng/bin/ct-ng build."$(nproc)" ${EXTRA_CT_NG_ARGS}
 popd
 
 # tarball
