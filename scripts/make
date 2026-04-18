@@ -24,13 +24,13 @@ sudo apt-get install -y --no-install-recommends \
   pkg-config python3 rsync texinfo unzip wget xz-utils \
   libzstd-dev
 
+# Add newline to patches without one
 find targets/ -name "*.patch" | while read -r f; do
     if [[ $(tail -c1 "$f" | wc -l) -eq 0 ]]; then
         echo "" >> "$f"
         echo "Fixed: $f"
     fi
 done
-
 # patch
 pushd builder
 git reset --hard HEAD
@@ -110,7 +110,6 @@ popd
 CT_ACTUAL=$(sed -n 's/^CT_TARGET="\(.*\)"/\1/p' build/.config)
 rm -rf "${TARGET}"
 sudo mv -T /opt/x-tools/"${CT_ACTUAL}" "${TARGET}"
-#sudo mv /opt/x-tools/"${TARGET}" .
 sudo chown -R root:root "${TARGET}"
 env XZ_OPT="-T0" sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"
 sudo sha256sum "${TARGET}".tar.xz | awk '{ print $1 }' > "${TARGET}".tar.xz.sha256

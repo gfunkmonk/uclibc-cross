@@ -46,7 +46,7 @@ jobs:
         target:
           #- aarch64-unknown-linux-uclibc
           #- aarch64_be-unknown-linux-uclibc
-          - alpha-unknown-linux-uclibc
+          - alphaev67-unknown-linux-uclibc
           #- arm-unknown-linux-uclibcgnueabi
           #- arm-unknown-linux-uclibcgnueabihf
           #- armv4t-unknown-linux-uclibcgnueabi
