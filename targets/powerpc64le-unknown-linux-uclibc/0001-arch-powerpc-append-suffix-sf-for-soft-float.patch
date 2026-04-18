@@ -1,10 +1,9 @@
---- a/scripts/build/arch/powerpc.sh	2026-01-31 09:08:40.674803776 -0500
-+++ b/scripts/build/arch/powerpc.sh	2026-01-31 09:08:55.078947536 -0500
-@@ -19,6 +19,11 @@
+--- a/scripts/build/arch/powerpc.sh
++++ b/scripts/build/arch/powerpc.sh
+@@ -19,6 +19,10 @@
              ;;
      esac
  
-+
 +    if [ "${CT_ARCH_FLOAT}" = "soft" ]; then
 +        CT_TARGET_SYS="${CT_TARGET_SYS}sf"
 +    fi
