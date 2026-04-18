@@ -1,27 +1,27 @@
 --- a/packages/uClibc-ng/1.0.57/0006-sparc64-fix-context-register-declarations.patch
 +++ b/packages/uClibc-ng/1.0.57/0006-sparc64-fix-context-register-declarations.patch
 @@ -0,0 +1,24 @@
-+--- a/libc/sysdeps/linux/sparc/getcontext.S
-++++ b/libc/sysdeps/linux/sparc/getcontext.S
-+@@ -19,6 +19,9 @@
-+ #include <sys/asm.h>
-+ #include <asm/addrspace.h>
-+ 
++--- a/libc/sysdeps/linux/sparc/getcontext.S     2026-03-01 00:49:31.000000000 -0500
+++++ b/libc/sysdeps/linux/sparc/getcontext.S     2026-04-18 13:51:15.286065793 -0400
++@@ -21,6 +21,9 @@
++
++ #include "ucontext_i.h"
++
 ++.register %g2, #scratch
 ++.register %g3, #scratch
 ++
-+ ENTRY(getcontext)
-+ 	mov	%o0, %o1
-+ 	sethi	%hi(SIG_SETMASK), %o0
-+--- a/libc/sysdeps/linux/sparc/setcontext.S
-++++ b/libc/sysdeps/linux/sparc/setcontext.S
-+@@ -19,6 +19,9 @@
-+ #include <sys/asm.h>
-+ #include <asm/addrspace.h>
-+ 
++ /*  int __getcontext (ucontext_t *ucp)
++
++   Saves the machine context in UCP such that when it is activated,
++--- a/libc/sysdeps/linux/sparc/setcontext.S     2026-03-01 00:49:31.000000000 -0500
+++++ b/libc/sysdeps/linux/sparc/setcontext.S     2026-04-18 13:52:44.086065939 -0400
++@@ -21,6 +21,9 @@
++
++ #include "ucontext_i.h"
++
 ++.register %g2, #scratch
 ++.register %g3, #scratch
 ++
-+ ENTRY(setcontext)
-+ 	mov	%o0, %o2
-+ 	sethi	%hi(SIG_SETMASK), %o0
++ #define ST_FLUSH_WINDOWS 3
++
++ /*  int __setcontext (const ucontext_t *ucp)
