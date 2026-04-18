@@ -21,3 +21,5 @@ CT_ALL_TARGET_CFLAGS="-msecure-plt"
 # Ensure these are set in your target configs
 CT_GCC_LTO=n
 CT_LIBC_UCLIBC_DEBUG_LEVEL_0=y
+CT_LOG_EXTRA=y
+CT_LOG_LEVEL_MAX="EXTRA"
