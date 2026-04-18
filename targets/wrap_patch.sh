@@ -11,10 +11,11 @@ if [ ! -f "$PATCH_FILE" ]; then
 fi
 
 NEW_PATCH="wrapped_$(basename "$PATCH_FILE")"
+LINE_COUNT=$(wc -l < "$PATCH_FILE")
 
 echo "--- a/packages/${PKG}/${VER}/$(basename "$PATCH_FILE")" > "$NEW_PATCH"
 echo "+++ b/packages/${PKG}/${VER}/$(basename "$PATCH_FILE")" >> "$NEW_PATCH"
-echo "@@ -0,0 +$(wc -l < "$PATCH_FILE") @@" >> "$NEW_PATCH"
+echo "@@ -0,0 +1,${LINE_COUNT} @@" >> "$NEW_PATCH"
 sed 's/^/+/ ' "$PATCH_FILE" >> "$NEW_PATCH"
 
 echo "Created $NEW_PATCH"

@@ -51,14 +51,15 @@ git reset --hard HEAD
 git clean -fd
 shopt -s nullglob
 for i in ../targets/"${TARGET}"/*.patch; do
-    # If the patch is meant for a package (e.g. uClibc-ng), move it to the right place
-    if grep -q "+++ b/libc/" "$i" || grep -q "+++ b/ldso/" "$i"; then
-        DEST="packages/uClibc-ng/1.0.57"
-        mkdir -p "$DEST"
-        cp "$i" "$DEST/"
-        echo "Injected package patch: $(basename "$i") -> $DEST"
+    if grep -qE "^\+\+\+ b/packages/" "$i"; then
+        # Wrapped package patch — apply it to create the patch file in place
+        patch -Np1 -i "$i"
+    elif grep -qE "^\+\+\+ b/(libc|ldso|extra)/" "$i"; then
+        # Raw/unwrapped package patch — copy directly for ct-ng to consume
+        mkdir -p "packages/uClibc-ng/1.0.57"
+        cp "$i" "packages/uClibc-ng/1.0.57/$(basename "$i")"
     else
-        # Standard ct-ng core patch (like your alpha/hppa fixes)
+        # ct-ng core patch (scripts/build/arch etc.)
         patch -Np1 -i "$i"
     fi
 done
