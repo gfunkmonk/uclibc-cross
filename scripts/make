@@ -63,25 +63,21 @@ make -j"$(nproc)"
 sudo make install
 popd
 
-#EXTRA_CT_NG_ARGS=""
-
 case "${TARGET}" in
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc64"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
         ;;
     s390-ibm-linux-uclibc)
-        #export ARCH="s390"
+        export ARCH="s390"
         export TARGET_CFLAGS="-m31"
         export TARGET_LDFLAGS="-m31"
-        export ARCH=s390
         export TARGET_ARCH=s390
         ;;
     s390x-ibm-linux-uclibc)
-        #export ARCH="s390x"
+        export ARCH="s390x"
         export TARGET_CFLAGS="-m64"
         export TARGET_LDFLAGS="-m64"
-        export ARCH=s390
         export TARGET_ARCH=s390
         ;;
     *)

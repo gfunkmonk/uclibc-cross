@@ -1,8 +1,8 @@
 --- a/packages/uClibc-ng/1.0.57/0002-powerpcle-clone.S.patch
 +++ b/packages/uClibc-ng/1.0.57/0002-powerpcle-clone.S.patch
 @@ -0,0 +1,48 @@
-+--- libc/sysdeps/linux/powerpc/clone.S  2026-03-01 00:49:31.000000000 -0500
-++++ libc/sysdeps/linux/powerpc/clone.S.patched  2026-04-18 11:29:57.826051851 -0400
++--- a/libc/sysdeps/linux/powerpc/clone.S  2026-03-01 00:49:31.000000000 -0500
+++++ b/libc/sysdeps/linux/powerpc/clone.S  2026-04-18 11:29:57.826051851 -0400
 +@@ -45,9 +45,20 @@
 +        stwu    r1,-32(r1)
 +        cfi_adjust_cfa_offset (32)
