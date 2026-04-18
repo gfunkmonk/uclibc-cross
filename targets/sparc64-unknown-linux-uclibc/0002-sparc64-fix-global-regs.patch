@@ -1,0 +1,12 @@
+--- a/libc/sysdeps/linux/sparc/clone.S
++++ b/libc/sysdeps/linux/sparc/clone.S
+@@ -25,6 +25,12 @@
+ #define _ERRNO_H
+ #include <bits/errno.h>
+ #include <sys/syscall.h>
++
++#if defined(__sparc_v9__) || defined(__arch64__)
++.register %g2, #scratch
++.register %g3, #scratch
++#endif
++

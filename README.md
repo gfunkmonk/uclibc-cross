@@ -8,8 +8,6 @@ This is a simple, lightweight project for making cross-compilation toolchain wit
 |----------------------------------|---------|----------|--------|-------|--------|
 | aarch64-unknown-linux-uclibc     | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
 | aarch64-be-unknown-linux-uclibc  | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
-| alphaev56-unknown-linux-uclibc   | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
-| alphaev67-unknown-linux-uclibc   | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
 | arm-unknown-linux-uclibceabi     | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
 | arm-unknown-linux-uclibceabihf   | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
 | armv4t-unknown-linux-uclibceabi  | 6.18.22 |   2.46   | 15.2.0 | 1.0.57 | 2.41.0 |
