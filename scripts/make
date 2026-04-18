@@ -45,9 +45,11 @@ sudo apt-get install -y --no-install-recommends \
   xz-utils \
   libzstd-dev
 
-for i in targets/"${TARGET}"/*.patch; do
+pushd targets
+for i in "${TARGET}"/*.patch; do
     [[ $(tail -c1 "$f" | wc -l) -eq 0 ]] && echo "" >> "$f"
 done
+popd
 
 # patch
 pushd builder
