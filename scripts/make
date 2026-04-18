@@ -8,6 +8,7 @@ if [[ $# -lt 1 || -z "$1" ]]; then
     echo "Example: $0 x86_64-unknown-linux-uclibc" >&2
     exit 1
 fi
+
 TARGET=$1
 if [[ ! -d "targets/${TARGET}" ]]; then
     echo "Error: target '${TARGET}' not found in targets/" >&2
@@ -15,36 +16,13 @@ if [[ ! -d "targets/${TARGET}" ]]; then
 fi
 
 # packages
-sudo apt-get update
+sudo apt-get update -qy
 sudo apt-get install -y --no-install-recommends \
-  automake \
-  bison \
-  bzip2 \
-  ca-certificates \
-  cmake \
-  curl \
-  file \
-  flex \
-  g++ \
-  gawk \
-  gdb \
-  git \
-  gperf \
-  help2man \
-  libncurses-dev \
-  libssl-dev \
-  libtool-bin \
-  make \
-  patch \
-  pkg-config \
-  python3 \
-  rsync \
-  texinfo \
-  unzip \
-  wget \
-  xz-utils \
+  automake bison bzip2 ca-certificates cmake \
+  curl file flex g++ gawk gdb git gperf help2man \
+  libncurses-dev libssl-dev libtool-bin make patch \
+  pkg-config python3 rsync texinfo unzip wget xz-utils \
   libzstd-dev
-
 
 find targets/ -name "*.patch" | while read -r f; do
     if [[ $(tail -c1 "$f" | wc -l) -eq 0 ]]; then
@@ -85,6 +63,8 @@ make -j"$(nproc)"
 sudo make install
 popd
 
+EXTRA_CT_NG_ARGS=""
+
 case "${TARGET}" in
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc64"
@@ -123,7 +103,7 @@ echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
-/opt/ct-ng/bin/ct-ng build."$(nproc)" ${EXTRA_CT_NG_ARGS}
+/opt/ct-ng/bin/ct-ng build."$(nproc)" "${EXTRA_CT_NG_ARGS}"
 popd
 
 # tarball
@@ -131,7 +111,7 @@ popd
 # so read the actual CT_TARGET from the build config instead of using $TARGET
 CT_ACTUAL=$(sed -n 's/^CT_TARGET="\(.*\)"/\1/p' build/.config)
 rm -rf "${TARGET}"
-sudo mv -T /opt/x-tools/${CT_ACTUAL} "${TARGET}"
+sudo mv -T /opt/x-tools/"${CT_ACTUAL}" "${TARGET}"
 #sudo mv /opt/x-tools/"${TARGET}" .
 sudo chown -R root:root "${TARGET}"
 env XZ_OPT="-T0" sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"

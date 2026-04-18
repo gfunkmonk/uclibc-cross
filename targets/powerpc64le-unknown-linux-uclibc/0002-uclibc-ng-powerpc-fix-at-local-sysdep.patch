@@ -1,6 +1,6 @@
 --- a/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-fix-at-local-sysdep.patch
 +++ b/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-fix-at-local-sysdep.patch
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,20 @@
 +--- a/ldso/ldso/powerpc/dl-sysdep.h
 ++++ b/ldso/ldso/powerpc/dl-sysdep.h
 +@@ -98,7 +98,7 @@
@@ -20,3 +20,4 @@
 ++       "b _DYNAMIC;"
 +         "0:"
 +         : "=l"(branchaddr));
++
