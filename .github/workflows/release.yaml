@@ -113,7 +113,7 @@ jobs:
       - name: CCACHE Shit
         run: |
           DEBIAN_FRONTEND=noninteractive sudo apt-get -y update
-          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-utils ccache ca-certificates gpg wget
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-utils ccache ca-certificates gpg wget libzstd-dev
 
           cat >> $GITHUB_ENV << 'EOF'
           CCACHE_SLOPPINESS=file_macro,locale,time_macros

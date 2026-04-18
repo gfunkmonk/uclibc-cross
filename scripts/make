@@ -43,17 +43,35 @@ sudo apt-get install -y --no-install-recommends \
   unzip \
   wget \
   xz-utils \
-  zstd
+  libzstd-dev
 
 # patch
 pushd builder
 git reset --hard HEAD
 git clean -fd
-shopt -s nullglob
-for i in ../targets/"${TARGET}"/*.patch; do
-    patch -Np1 -i "$i"
+#shopt -s nullglob
+#for i in ../targets/"${TARGET}"/*.patch; do
+#    patch -Np1 -i "$i"
+#done
+#shopt -u nullglob
+# 5. Automated Patch Injection
+# Logic to dynamically place patches where ct-ng expects them
+for patch_file in ../"${TARGET_DIR}"/*.patch; do
+    if [ -f "$patch_file" ]; then
+        # Extract PKG and VER from the patch content or filename
+        # This assumes your patches contain the standard path header
+        PKG_NAME=$(grep -m 1 "+++ b/packages/" "$patch_file" | awk -F'/' '{print $3}')
+        PKG_VER=$(grep -m 1 "+++ b/packages/" "$patch_file" | awk -F'/' '{print $4}')
+        
+        if [ -n "$PKG_NAME" ] && [ -n "$PKG_VER" ]; then
+            DEST="packages/${PKG_NAME}/${PKG_VER}"
+            mkdir -p "$DEST"
+            cp "$patch_file" "$DEST/"
+            echo "Successfully injected patch into $DEST"
+        fi
+    fi
 done
-shopt -u nullglob
+cd ..
 popd
 
 # crosstool-ng
