@@ -1,13 +1,6 @@
---- /dev/null
-+++ b/packages/uClibc-ng/1.0.57/0002-fix-gettimeofday-in-ldso.patch
-@@ -0,0 +1,33 @@
-+ldso: guard _dl_gettimeofday with __NR_gettimeofday check
-+
-+Some architectures (such as riscv32) do not define __NR_gettimeofday
-+in their Linux headers. Guard the syscall definition with an #ifdef
-+and provide a fallback stub that returns -1 for the stack-protector
-+canary initialization path.
-+
+--- a/packages/uClibc-ng/1.0.57/0002-uclibc-ng-fix-gettimeofday-in-ldso.patch
++++ b/packages/uClibc-ng/1.0.57/0002-uclibc-ng-fix-gettimeofday-in-ldso.patch
+@@ -0,0 +1,26 @@
 +--- a/ldso/include/dl-syscall.h
 ++++ b/ldso/include/dl-syscall.h
 +@@ -263,11 +263,15 @@

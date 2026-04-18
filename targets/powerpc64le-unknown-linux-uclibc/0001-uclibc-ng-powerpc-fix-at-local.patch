@@ -1,6 +1,6 @@
---- a/packages/uClibc-ng/1.0.57/0001-powerpc-fix-at-local.patch
-+++ b/packages/uClibc-ng/1.0.57/0001-powerpc-fix-at-local.patch
-@@ -0,0 +1,22 @@
+--- a/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
++++ b/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
+@@ -0,0 +1,20 @@
 +--- a/ldso/ldso/powerpc/dl-startup.h
 ++++ b/ldso/ldso/powerpc/dl-startup.h
 +@@ -14,7 +14,7 @@

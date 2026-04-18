@@ -1,13 +1,6 @@
---- a/packages/uClibc-ng/1.0.57/0002-powerpc-support-any-endian.patch
-+++ b/packages/uClibc-ng/1.0.57/0002-powerpc-support-any-endian.patch
-@@ -0,0 +1,18 @@
-+powerpc: support any endianness for 32-bit
-+
-+Config.powerpc unconditionally selected ARCH_BIG_ENDIAN, preventing
-+little-endian PowerPC 32-bit (powerpcle) toolchains from being built.
-+Change to ARCH_ANY_ENDIAN so the endianness can be configured;
-+big-endian remains the default via ARCH_WANTS_BIG_ENDIAN.
-+
+--- a/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-support-any-endian.patch
++++ b/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-support-any-endian.patch
+@@ -0,0 +1,10 @@
 +--- a/extra/Configs/Config.powerpc
 ++++ b/extra/Configs/Config.powerpc
 +@@ -10,7 +10,7 @@

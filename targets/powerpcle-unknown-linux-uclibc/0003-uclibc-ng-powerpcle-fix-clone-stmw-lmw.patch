@@ -1,12 +1,6 @@
---- a/packages/uClibc-ng/1.0.57/0003-powerpcle-fix-clone-stmw-lmw.patch
-+++ b/packages/uClibc-ng/1.0.57/0003-powerpcle-fix-clone-stmw-lmw.patch
-@@ -0,0 +61,59 @@
-+powerpc: replace stmw/lmw with individual stores/loads for little-endian
-+
-+Binutils 2.46 rejects stmw and lmw instructions for little-endian PowerPC
-+targets because they do not work correctly in that mode. Use individual
-+stw/lwz instructions instead when building for little-endian.
-+
+--- a/packages/uClibc-ng/1.0.57/0003-uclibc-ng-powerpcle-fix-clone-stmw-lmw.patch
++++ b/packages/uClibc-ng/1.0.57/0003-uclibc-ng-powerpcle-fix-clone-stmw-lmw.patch
+@@ -0,0 +1,51 @@
 +--- a/libc/sysdeps/linux/powerpc/clone.S
 ++++ b/libc/sysdeps/linux/powerpc/clone.S
 +@@ -44,11 +44,22 @@
