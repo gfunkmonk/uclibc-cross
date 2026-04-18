@@ -1,31 +1,28 @@
---- a/packages/uClibc-ng/1.0.57/0002-powerpc-fix-clone-little-endian.patch
-+++ b/packages/uClibc-ng/1.0.57/0002-powerpc-fix-clone-little-endian.patch
-@@ -0,0 +35,33 @@
-+--- a/libc/sysdeps/linux/powerpc/clone.S
-++++ b/libc/sysdeps/linux/powerpc/clone.S
-+@@ -45,7 +45,15 @@
-+ 	stwu	1,-16(1)
-+ 
-+ 	/* Save the function pointer and arg on the new stack.  */
-++#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-++	stw	3, 8(1)
-++	stw	6, 12(1)
-++#else
-+ 	stmw	3, 8(1)
-++#endif
-+ 
-+ 	/* Do the system call.  */
-+ 	li	0, __NR_clone
-+@@ -101,7 +109,12 @@
-+ 	/* r3=fn, r4=arg.  */
-+ 	/* We need to load them off the stack since the child has a new
-+ 	   stack.  */
-++#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-++	lwz	0, 8(1)
-++	lwz	3, 12(1)
-++#else
-+ 	lmw	0, 8(1)
-++#endif
-+ 
-+ 	mtctr	0
-+ 	bctrl
+--- a/libc/sysdeps/linux/powerpc/clone.S
++++ b/libc/sysdeps/linux/powerpc/clone.S
+@@ -45,7 +45,15 @@
+ 	stwu	1,-16(1)
+ 
+ 	/* Save the function pointer and arg on the new stack.  */
++#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++	stw	3, 8(1)
++	stw	6, 12(1)
++#else
+ 	stmw	3, 8(1)
++#endif
+ 
+ 	/* Do the system call.  */
+ 	li	0, __NR_clone
+@@ -101,7 +109,12 @@
+ 	/* r3=fn, r4=arg.  */
+ 	/* We need to load them off the stack since the child has a new
+ 	   stack.  */
++#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++	lwz	0, 8(1)
++	lwz	3, 12(1)
++#else
+ 	lmw	0, 8(1)
++#endif
+ 
+ 	mtctr	0
+ 	bctrl
