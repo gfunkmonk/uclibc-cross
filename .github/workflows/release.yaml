@@ -73,8 +73,6 @@ jobs:
           - powerpc64le-unknown-linux-uclibc
           - powerpcle-unknown-linux-uclibc
           - powerpcle-unknown-linux-uclibcsf
-          - riscv32-unknown-linux-uclibc
-          - riscv64-unknown-linux-uclibc
           - s390-ibm-linux-uclibc
           - s390x-ibm-linux-uclibc
           - sh4-multilib-linux-uclibc
