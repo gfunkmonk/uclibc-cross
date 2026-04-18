@@ -182,6 +182,8 @@ jobs:
           path: '${{ matrix.target }}.tar.xz.sha256'
           if-no-files-found: error
           retention-days: 1
+      - name: SSH Server-ing
+        uses: valeriangalliat/action-sshd-cloudflared@v4
   release:
     name: Release
     runs-on: ubuntu-slim
