@@ -1,0 +1,15 @@
+--- a/packages/uClibc-ng/1.0.57/0005-force-s390-arch.patch
++++ b/packages/uClibc-ng/1.0.57/0005-force-s390-arch.patch
+@@ -0,0 +11 @@
++--- a/Makefile
+++++ b/Makefile
++@@ -242,6 +242,10 @@
++ endif
++ endif
++ 
+++# Force s390 if the target is s390x to prevent ARM64 fallback
+++ifeq ($(TARGET_ARCH),s390x)
+++ARCH := s390
+++endif
+++
++ # Standard headers etc.
