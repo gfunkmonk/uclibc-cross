@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -o pipefail
 
 if [[ $# -lt 1 || -z "$1" ]]; then
     echo "Usage: $0 <target>" >&2
@@ -82,7 +83,8 @@ popd
 # ct-ng may normalize the target triple (e.g. uclibceabi -> uclibcgnueabi),
 # so read the actual CT_TARGET from the build config instead of using $TARGET
 CT_ACTUAL=$(sed -n 's/^CT_TARGET="\(.*\)"/\1/p' build/.config)
-sudo mv /opt/x-tools/"${TARGET}" .
+sudo mv /opt/x-tools/${CT_ACTUAL} ${TARGET}
+#sudo mv /opt/x-tools/"${TARGET}" .
 sudo chown -R root:root "${TARGET}"
 sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"
 sudo sha256sum "${TARGET}".tar.xz | awk '{ print $1 }' > "${TARGET}".tar.xz.sha256
