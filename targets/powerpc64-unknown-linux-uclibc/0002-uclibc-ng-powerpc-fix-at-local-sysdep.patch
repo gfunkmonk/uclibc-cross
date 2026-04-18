@@ -4,20 +4,20 @@
 +--- a/ldso/ldso/powerpc/dl-sysdep.h
 ++++ b/ldso/ldso/powerpc/dl-sysdep.h
 +@@ -98,7 +98,7 @@
-+             "  addi %0,%0,_GLOBAL_OFFSET_TABLE_-1b@l\n"
-+             : "=b" (got) : : "lr");
++ 	     "	addi %0,%0,_GLOBAL_OFFSET_TABLE_-1b@l\n"
++ 	     : "=b" (got) : : "lr");
 + #else
-+-       __asm__ (" bl _GLOBAL_OFFSET_TABLE_-4@local"
-++       __asm__ (" bl _GLOBAL_OFFSET_TABLE_-4"
-+              : "=l" (got));
++-	__asm__ (" bl _GLOBAL_OFFSET_TABLE_-4@local"
+++	__asm__ (" bl _GLOBAL_OFFSET_TABLE_-4"
++ 	     : "=l" (got));
 + #endif
-+        return got;
++ 	return got;
 +@@ -149,7 +149,7 @@
 + 
 +   /* Get address of the 'b _DYNAMIC@local'...  */
 +   __asm__ ("bcl 20,31,0f;"
 +-       "b _DYNAMIC@local;"
 ++       "b _DYNAMIC;"
-+         "0:"
-+         : "=l"(branchaddr));
-+
++        "0:"
++        : "=l"(branchaddr));
++ 
