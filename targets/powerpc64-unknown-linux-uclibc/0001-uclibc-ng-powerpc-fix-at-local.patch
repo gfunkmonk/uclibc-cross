@@ -1,23 +1,23 @@
 --- a/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
 +++ b/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
 @@ -0,0 +1,20 @@
-+--- a/ldso/ldso/powerpc/dl-startup.h
-++++ b/ldso/ldso/powerpc/dl-startup.h
++--- a/ldso/ldso/powerpc/dl-startup.h    2026-03-01 00:49:30.000000000 -0500
+++++ b/ldso/ldso/powerpc/dl-startup.h    2026-04-18 08:53:30.096036412 -0400
 +@@ -14,7 +14,7 @@
-+ 	" li      0,0\n"
-+ 	" stwu    1,-16(1)\n" /* Make room on stack for _dl_start to store LR */
-+ 	" stw      0,0(1)\n" /* Clear Stack frame */
-+-	" bl      _dl_start@local\n" /* Perform relocation */
-++	" bl      _dl_start\n" /* Perform relocation */
-+ 	/* Save the address of the apps entry point in CTR register */
-+ 	" mtctr    3\n" /* application entry point */
++     "  li      0,0\n"
++     "  stwu    1,-16(1)\n" /* Make room on stack for _dl_start to store LR */
++     "  stw     0,0(1)\n" /* Clear Stack frame */
++-    "  bl      _dl_start@local\n" /* Perform relocation */
+++    "  bl      _dl_start\n" /* Perform relocation */
++     /*  Save the address of the apps entry point in CTR register */
++     "  mtctr   3\n" /* application entry point */
 + #ifdef HAVE_ASM_PPC_REL16
 +@@ -23,7 +23,7 @@
-+ 	" addis    31,31,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
-+ 	" addi     31,31,_GLOBAL_OFFSET_TABLE_-1b@l\n"
++     "  addis   31,31,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
++     "  addi    31,31,_GLOBAL_OFFSET_TABLE_-1b@l\n"
 + #else
-+-	" bl      _GLOBAL_OFFSET_TABLE_-4@local\n" /* Put our GOT pointer in r31, */
-++	" bl      _GLOBAL_OFFSET_TABLE_-4\n" /* Put our GOT pointer in r31, */
-+ 	" mflr     31\n"
++-    "  bl      _GLOBAL_OFFSET_TABLE_-4@local\n" /*  Put our GOT pointer in r31, */
+++    "  bl      _GLOBAL_OFFSET_TABLE_-4\n" /*  Put our GOT pointer in r31, */
++     "  mflr    31\n"
 + #endif
 + /* I'm quite sure this piece of code is always compiled as PIC but let's be sure */
