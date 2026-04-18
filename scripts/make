@@ -45,16 +45,15 @@ sudo apt-get install -y --no-install-recommends \
   xz-utils \
   libzstd-dev
 
-pushd targets
-for i in "${TARGET}"/*.patch; do
-    [[ $(tail -c1 "$f" | wc -l) -eq 0 ]] && echo "" >> "$f"
-done
-popd
+
 
 # patch
 pushd builder
 git reset --hard HEAD
 git clean -fd
+for i in ../targets/"${TARGET}"/*.patch; do
+    [[ $(tail -c1 "$f" | wc -l) -eq 0 ]] && echo "" >> "$f"
+done
 shopt -s nullglob
 for i in ../targets/"${TARGET}"/*.patch; do
     if grep -qE "^\+\+\+ b/packages/" "$i"; then
