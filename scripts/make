@@ -48,11 +48,11 @@ sudo apt-get install -y --no-install-recommends \
 pushd builder
 git reset --hard HEAD
 git clean -fd
-for i in ../targets/"${TARGET}"/*; do
-    if [[ $i == *.patch ]]; then
-        patch -Np1 -i "$i"
-    fi
+shopt -s nullglob
+for i in ../targets/"${TARGET}"/*.patch; do
+    patch -Np1 -i "$i"
 done
+shopt -u nullglob
 popd
 
 # crosstool-ng
