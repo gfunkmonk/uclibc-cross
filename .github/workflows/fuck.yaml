@@ -68,7 +68,8 @@ jobs:
           #- mips64el-unknown-linux-uclibc
           #- mipsel-unknown-linux-uclibc
           #- mipsel-unknown-linux-uclibcsf
-          - powerpc-unknown-linux-uclibc
+          - or1k-unknown-linux-uclibc
+          #- powerpc-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibcsf
           - powerpc64-unknown-linux-uclibc
           - powerpc64le-unknown-linux-uclibc
