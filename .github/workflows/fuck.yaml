@@ -156,15 +156,16 @@ jobs:
           restore-keys: |
             tarballs-${{ runner.os }}-${{ matrix.target }}-
             tarballs-${{ runner.os }}-
-      - if: '${{ inputs.sshserver }}'
-        name: SSH Server-ing
-        uses: valeriangalliat/action-sshd-cloudflared@v4
+      #- if: '${{ inputs.sshserver }}'
+      #  name: SSH Server-ing
+      #  uses: valeriangalliat/action-sshd-cloudflared@v4
       - name: Build
         run: |
           sudo rm -rf /opt/*
           ./scripts/make ${{ matrix.target }}
         continue-on-error: true
-      - name: SSH Server-ing
+      - if: '${{ inputs.sshserver }}'
+        name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
       - name: Save tarballs cache
         uses: actions/cache/save@v5
