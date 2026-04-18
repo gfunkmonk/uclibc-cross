@@ -1,0 +1,16 @@
+--- a/packages/uClibc-ng/1.0.57/0008-alpha-fix-dso-sections.patch
++++ b/packages/uClibc-ng/1.0.57/0008-alpha-fix-dso-sections.patch
+@@ -0,0 +1,13 @@
++--- a/libc/sysdeps/linux/alpha/crti.S
+++++ b/libc/sysdeps/linux/alpha/crti.S
++@@ -6,10 +6,6 @@
++ 
++ 	.section .init, "ax", @progbits
++ 	.globl _init
++-	.type _init, @function
++ _init:
++ 	ldgp $29, 0($27)
++ 	subq $30, 16, $30
++-	stq $26, 0($30)
++-
++-	.section .fini, "ax", @progbits

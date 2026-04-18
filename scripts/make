@@ -91,14 +91,18 @@ case "${TARGET}" in
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
         ;;
     s390-ibm-linux-uclibc)
-        export ARCH="s390"
+        #export ARCH="s390"
         export TARGET_CFLAGS="-m31"
         export TARGET_LDFLAGS="-m31"
+        export ARCH=s390
+        export TARGET_ARCH=s390
         ;;
     s390x-ibm-linux-uclibc)
-        export ARCH="s390x"
+        #export ARCH="s390x"
         export TARGET_CFLAGS="-m64"
         export TARGET_LDFLAGS="-m64"
+        export ARCH=s390
+        export TARGET_ARCH=s390
         ;;
     *)
         UCLIBC_ARCH=$(echo "${TARGET}" | cut -d- -f1 | sed -E 's/(64|le|be)//g')

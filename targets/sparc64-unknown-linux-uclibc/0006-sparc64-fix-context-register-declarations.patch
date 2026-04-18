@@ -1,0 +1,27 @@
+--- a/packages/uClibc-ng/1.0.57/0006-sparc64-fix-context-register-declarations.patch
++++ b/packages/uClibc-ng/1.0.57/0006-sparc64-fix-context-register-declarations.patch
+@@ -0,0 +1,24 @@
++--- a/libc/sysdeps/linux/sparc/getcontext.S
+++++ b/libc/sysdeps/linux/sparc/getcontext.S
++@@ -19,6 +19,9 @@
++ #include <sys/asm.h>
++ #include <asm/addrspace.h>
++ 
+++.register %g2, #scratch
+++.register %g3, #scratch
+++
++ ENTRY(getcontext)
++ 	mov	%o0, %o1
++ 	sethi	%hi(SIG_SETMASK), %o0
++--- a/libc/sysdeps/linux/sparc/setcontext.S
+++++ b/libc/sysdeps/linux/sparc/setcontext.S
++@@ -19,6 +19,9 @@
++ #include <sys/asm.h>
++ #include <asm/addrspace.h>
++ 
+++.register %g2, #scratch
+++.register %g3, #scratch
+++
++ ENTRY(setcontext)
++ 	mov	%o0, %o2
++ 	sethi	%hi(SIG_SETMASK), %o0
