@@ -1,14 +1,14 @@
 --- a/packages/uClibc-ng/1.0.57/0001-sparc64-fix-clone-register-pseudo-op.patch
 +++ b/packages/uClibc-ng/1.0.57/0001-sparc64-fix-clone-register-pseudo-op.patch
-@@ -0,0 +12 @@
+@@ -0,0 +1,11 @@
 +--- a/libc/sysdeps/linux/sparc/clone.S
 ++++ b/libc/sysdeps/linux/sparc/clone.S
 +@@ -20,6 +20,10 @@
 + /* clone() is even more special than fork() as it mucks with stacks
 +    and invokes a function in the right context after its all over.  */
 + 
-++	.register %g2, #scratch
-++	.register %g3, #scratch
+++.register %g2, #scratch
+++.register %g3, #scratch
 ++
 + #include <asm/errno.h>
 + #include <asm/unistd.h>

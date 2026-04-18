@@ -1,6 +1,6 @@
 --- a/packages/uClibc-ng/1.0.57/0002-alpha-fix-init-fini-arrays.patch
 +++ b/packages/uClibc-ng/1.0.57/0002-alpha-fix-init-fini-arrays.patch
-@@ -0,0 +42 @@
+@@ -0,0 +40,38 @@
 +--- a/libc/sysdeps/linux/alpha/crti.S
 ++++ b/libc/sysdeps/linux/alpha/crti.S
 +@@ -5,3 +5,16 @@

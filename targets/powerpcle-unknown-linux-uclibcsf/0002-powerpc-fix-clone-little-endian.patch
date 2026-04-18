@@ -1,6 +1,6 @@
 --- a/packages/uClibc-ng/1.0.57/0002-powerpc-fix-clone-little-endian.patch
 +++ b/packages/uClibc-ng/1.0.57/0002-powerpc-fix-clone-little-endian.patch
-@@ -0,0 +28 @@
+@@ -0,0 +35,33 @@
 +--- a/libc/sysdeps/linux/powerpc/clone.S
 ++++ b/libc/sysdeps/linux/powerpc/clone.S
 +@@ -45,7 +45,15 @@

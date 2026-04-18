@@ -6,11 +6,11 @@
 +@@ -25,6 +25,11 @@
 + #define _ERRNO_H
 + #include <bits/errno.h>
-+ 
++
 ++#if defined(__sparc_v9__) || defined(__arch64__)
 ++.register %g2, #scratch
 ++.register %g3, #scratch
 ++#endif
 ++
 + /* int clone(int (*fn)(void *arg), void *child_stack, int flags, void *arg,
-+ 	     pid_t *parent_tid, struct user_desc *newtls, pid_t *child_tid) */
++            pid_t *parent_tid, struct user_desc *newtls, pid_t *child_tid) */
