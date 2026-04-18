@@ -1,8 +1,8 @@
---- a/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
-+++ b/packages/uClibc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
+--- a/packages/uClobc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
++++ b/packages/uClobc-ng/1.0.57/0001-uclibc-ng-powerpc-fix-at-local.patch
 @@ -0,0 +1,20 @@
-+--- a/ldso/ldso/powerpc/dl-startup.h    2026-03-01 00:49:30.000000000 -0500
-++++ b/ldso/ldso/powerpc/dl-startup.h    2026-04-18 08:53:30.096036412 -0400
++--- a/ldso/ldso/powerpc/dl-startup.h      2026-03-01 00:49:30.000000000 -0500
+++++ b/ldso/ldso/powerpc/dl-startup.h      2026-04-18 11:13:25.676050219 -0400
 +@@ -14,7 +14,7 @@
 +     "  li      0,0\n"
 +     "  stwu    1,-16(1)\n" /* Make room on stack for _dl_start to store LR */

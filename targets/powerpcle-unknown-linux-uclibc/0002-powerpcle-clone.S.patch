@@ -1,0 +1,51 @@
+--- a/packages/uClobc-ng/1.0.57/0002-powerpcle-clone.S.patch
++++ b/packages/uClobc-ng/1.0.57/0002-powerpcle-clone.S.patch
+@@ -0,0 +1,48 @@
++--- libc/sysdeps/linux/powerpc/clone.S  2026-03-01 00:49:31.000000000 -0500
+++++ libc/sysdeps/linux/powerpc/clone.S.patched  2026-04-18 11:29:57.826051851 -0400
++@@ -45,9 +45,20 @@
++        stwu    r1,-32(r1)
++        cfi_adjust_cfa_offset (32)
++ #ifndef __ASSUME_FIXED_CLONE_SYSCALL
++-       stmw    r29,16(r1)
+++#ifdef __LITTLE_ENDIAN__
+++        stw     r29,16(r1)
+++        stw     r30,20(r1)
+++        stw     r31,24(r1)
++ #else
++-       stmw    r30,16(r1)
+++        stmw    r29,16(r1)
+++#endif
+++#else
+++#ifdef __LITTLE_ENDIAN__
+++        stw     r30,16(r1)
+++        stw     r31,20(r1)
+++#else
+++        stmw    r30,16(r1)
+++#endif
++ #endif
++
++        /* Set up stack frame for child.  */
++@@ -101,9 +112,20 @@
++ .Lparent:
++        /* Parent.  Restore registers & return.  */
++ #ifndef __ASSUME_FIXED_CLONE_SYSCALL
++-       lmw     r29,16(r1)
+++#ifdef __LITTLE_ENDIAN__
+++        lwz     r29,16(r1)
+++        lwz     r30,20(r1)
+++        lwz     r31,24(r1)
++ #else
++-       lmw     r30,16(r1)
+++        lmw     r29,16(r1)
+++#endif
+++#else
+++#ifdef __LITTLE_ENDIAN__
+++        lwz     r30,16(r1)
+++        lwz     r31,20(r1)
+++#else
+++        lmw     r30,16(r1)
+++#endif
++ #endif
++        addi    r1,r1,32
++        bnslr+
