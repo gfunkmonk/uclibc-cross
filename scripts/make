@@ -49,29 +49,20 @@ sudo apt-get install -y --no-install-recommends \
 pushd builder
 git reset --hard HEAD
 git clean -fd
-#shopt -s nullglob
-#for i in ../targets/"${TARGET}"/*.patch; do
-#    patch -Np1 -i "$i"
-#done
-#shopt -u nullglob
-# 5. Automated Patch Injection
-# Logic to dynamically place patches where ct-ng expects them
-for patch_file in ../"${TARGET_DIR}"/*.patch; do
-    if [ -f "$patch_file" ]; then
-        # Extract PKG and VER from the patch content or filename
-        # This assumes your patches contain the standard path header
-        PKG_NAME=$(grep -m 1 "+++ b/packages/" "$patch_file" | awk -F'/' '{print $3}')
-        PKG_VER=$(grep -m 1 "+++ b/packages/" "$patch_file" | awk -F'/' '{print $4}')
-        
-        if [ -n "$PKG_NAME" ] && [ -n "$PKG_VER" ]; then
-            DEST="packages/${PKG_NAME}/${PKG_VER}"
-            mkdir -p "$DEST"
-            cp "$patch_file" "$DEST/"
-            echo "Successfully injected patch into $DEST"
-        fi
+shopt -s nullglob
+for i in ../targets/"${TARGET}"/*.patch; do
+    # If the patch is meant for a package (e.g. uClibc-ng), move it to the right place
+    if grep -q "+++ b/libc/" "$i" || grep -q "+++ b/ldso/" "$i"; then
+        DEST="packages/uClibc-ng/1.0.57"
+        mkdir -p "$DEST"
+        cp "$i" "$DEST/"
+        echo "Injected package patch: $(basename "$i") -> $DEST"
+    else
+        # Standard ct-ng core patch (like your alpha/hppa fixes)
+        patch -Np1 -i "$i"
     fi
 done
-cd ..
+shopt -u nullglob
 popd
 
 # crosstool-ng
@@ -85,19 +76,28 @@ make -j"$(nproc)"
 sudo make install
 popd
 
-# In scripts/make, before the build command
-if [ "${TARGET}" = "sparc64-unknown-linux-uclibc" ]; then
-    export ARCH="sparc64"
-    # Use TARGET_CFLAGS/LDFLAGS or pass via ct-ng instead of global ASFLAGS
-    # This prevents leaking '-64' into host-gcc calls
-    EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
-else
-    UCLIBC_ARCH=$(echo "${TARGET}" | cut -d- -f1 | sed -E 's/(64|le|be)//g')
-    echo "Force-setting ARCH=${UCLIBC_ARCH} for uClibc-ng safety"
-    # Export these variables so the sub-make doesn't default to x86_64
-    export ARCH="${UCLIBC_ARCH}"
-    EXTRA_CT_NG_ARGS=""
-fi
+case "${TARGET}" in
+    sparc64-unknown-linux-uclibc)
+        export ARCH="sparc64"
+        EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
+        ;;
+    s390-ibm-linux-uclibc)
+        export ARCH="s390"
+        # s390 often needs explicit forced 31-bit flags if the host is 64-bit
+        export TARGET_CFLAGS="-m31"
+        export TARGET_LDFLAGS="-m31"
+        ;;
+    s390x-ibm-linux-uclibc)
+        export ARCH="s390x"
+        ;;
+    *)
+        UCLIBC_ARCH=$(echo "${TARGET}" | cut -d- -f1 | sed -E 's/(64|le|be)//g')
+        echo "Force-setting ARCH=${UCLIBC_ARCH} for uClibc-ng safety"
+        export ARCH="${UCLIBC_ARCH}"
+        EXTRA_CT_NG_ARGS=""
+        ;;
+esac
+
 export CROSS_COMPILE="${TARGET}-"
 
 # build

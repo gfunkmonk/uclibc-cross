@@ -1,0 +1,15 @@
+--- a/packages/uClibc-ng/1.0.57/0001-fix-uclibc-arch-riscv.patch
++++ b/packages/uClibc-ng/1.0.57/0001-fix-uclibc-arch-riscv.patch
+@@ -0,0 +12 @@
++--- a/scripts/build/arch/riscv.sh
+++++ b/scripts/build/arch/riscv.sh
++@@ -3,3 +3,9 @@
++ CT_DoArchTupleValues() {
++     CT_TARGET_ARCH="riscv${CT_ARCH_BITNESS}${target_endian_be}"
++ }
+++
+++CT_DoArchUClibcConfig() {
+++    local cfg="${1}"
+++
+++    CT_DoArchUClibcSelectArch "${cfg}" "riscv${CT_ARCH_BITNESS}"
+++}
