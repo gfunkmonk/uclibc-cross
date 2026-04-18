@@ -1,6 +1,6 @@
---- /dev/null
+--- a/packages/uClibc-ng/1.0.57/0001-sparc64-fix-clone-register-pseudo-op.patch
 +++ b/packages/uClibc-ng/1.0.57/0001-sparc64-fix-clone-register-pseudo-op.patch
-@@ -0,0 +1,16 @@
+@@ -0,0 +12 @@
 +--- a/libc/sysdeps/linux/sparc/clone.S
 ++++ b/libc/sysdeps/linux/sparc/clone.S
 +@@ -20,6 +20,10 @@
