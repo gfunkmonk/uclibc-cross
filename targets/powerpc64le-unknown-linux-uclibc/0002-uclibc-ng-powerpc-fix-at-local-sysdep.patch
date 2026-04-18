@@ -1,27 +1,27 @@
---- /dev/null
-+++ b/packages/uClibc-ng/1.0.57/0002-powerpc-fix-at-local-sysdep.patch
-@@ -0,0 +1,28 @@
+--- a/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-fix-at-local-sysdep.patch
++++ b/packages/uClibc-ng/1.0.57/0002-uclibc-ng-powerpc-fix-at-local-sysdep.patch
+@@ -0,0 +24 @@
 +--- a/ldso/ldso/powerpc/dl-sysdep.h
 ++++ b/ldso/ldso/powerpc/dl-sysdep.h
-+@@ -95,7 +95,7 @@ ppc_got (void)
++@@ -95,7 +95,7 @@
 + #ifdef HAVE_ASM_PPC_REL16
-+ 	__asm__ ("	bcl 20,31,1f\n"
-+ 	     "1:mflr %0\n"
-+ 	     "	addis %0,%0,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
-+ 	     "	addi %0,%0,_GLOBAL_OFFSET_TABLE_-1b@l\n"
-+ 	     : "=b" (got) : : "lr");
++ 	__asm__ ("          bcl 20,31,1f\n"
++ 	      "1:mflr %0\n"
++-	      "    addis %0,%0,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
+++	      "    addis %0,%0,_GLOBAL_OFFSET_TABLE_-1b@ha\n"
++ 	      "    addi %0,%0,_GLOBAL_OFFSET_TABLE_-1b@l\n"
++ 	      : "=b" (got) : : "lr");
 + #else
-+-	__asm__ (" bl _GLOBAL_OFFSET_TABLE_-4@local"
-++	__asm__ (" bl _GLOBAL_OFFSET_TABLE_-4"
-+ 	     : "=l" (got));
++-        __asm__ (" bl _GLOBAL_OFFSET_TABLE_-4@local"
+++        __asm__ (" bl _GLOBAL_OFFSET_TABLE_-4"
++ 	      : "=l" (got));
 + #endif
 + 	return got;
-+@@ -148,9 +148,9 @@ elf_machine_load_address (void)
++@@ -148,7 +148,7 @@
 + 
-+   /* Get address of the 'b _DYNAMIC@local'...  */
-+   __asm__ ("bcl 20,31,0f;"
++    /* Get address of the 'b _DYNAMIC@local'...  */
++    __asm__ ("bcl 20,31,0f;"
 +-       "b _DYNAMIC@local;"
 ++       "b _DYNAMIC;"
-+        "0:"
-+        : "=l"(branchaddr));
-+ 
++         "0:"
++         : "=l"(branchaddr));
