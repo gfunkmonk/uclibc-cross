@@ -1,5 +1,5 @@
 --- a/scripts/build/arch/alpha.sh	2026-04-17 05:47:03.012377850 +0000
-+++ b/a/scripts/build/arch/alpha.sh	2026-04-17 05:49:42.229745860 +0000
++++ b/scripts/build/arch/alpha.sh	2026-04-17 05:49:42.229745860 +0000
 @@ -4,3 +4,9 @@
      # The architecture part of the tuple:
      CT_TARGET_ARCH="${CT_ARCH}${CT_ARCH_SUFFIX:-${CT_ARCH_ALPHA_VARIANT}}"
