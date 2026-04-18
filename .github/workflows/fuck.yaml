@@ -73,8 +73,8 @@ jobs:
           #- powerpc-unknown-linux-uclibcsf
           - powerpc64-unknown-linux-uclibc
           - powerpc64le-unknown-linux-uclibc
-          - powerpcle-unknown-linux-uclibc
-          - powerpcle-unknown-linux-uclibcsf
+          #- powerpcle-unknown-linux-uclibc
+          #- powerpcle-unknown-linux-uclibcsf
           #- riscv32-unknown-linux-uclibc
           #- riscv64-unknown-linux-uclibc
           - s390-ibm-linux-uclibc
