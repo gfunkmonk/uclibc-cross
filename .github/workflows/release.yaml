@@ -3,15 +3,21 @@ name: Release
   workflow_dispatch:
     inputs:
       freespace:
-        description: Run F̳r̳e̳e̳ ̳D̳i̳s̳k̳ ̳S̳p̳a̳c̳e̳
+        description: F̳r̳e̳e̳ ̳D̳i̳s̳k̳ ̳S̳p̳a̳c̳e̳
         required: true
         type: boolean
         default: false
       swapspace:
-        description: Add Swap ̳S̳p̳a̳c̳e̳
+        description: Add Swap
         required: true
         type: boolean
         default: false
+      swapsize:
+        description: Swap Size (in gb)
+        type: choice
+        required: false
+        options: [3, 5, 10]
+        default: 5
       sshserver:
         description: Run SSH Server before build
         required: true
@@ -94,7 +100,7 @@ jobs:
         name: Add Swap Space for Build
         uses: pierotofy/set-swap-space@master
         with:
-          swap-size-gb: 3
+          swap-size-gb: '${{ inputs.swapsize }}'
       - name: Checkout
         uses: actions/checkout@v6
         with:
@@ -107,21 +113,19 @@ jobs:
       - name: CCACHE Shit
         run: |
           DEBIAN_FRONTEND=noninteractive sudo apt-get -y update
-          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-utils
-          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install ccache
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -y install apt-utils ccache ca-certificates gpg wget
 
           cat >> $GITHUB_ENV << 'EOF'
           CCACHE_SLOPPINESS=file_macro,locale,time_macros
           CCACHE_NOHASHDIR=true
           CCACHE_COMPRESS=1
           CCACHE_COMPRESSLEVEL=6
-          CCACHE_DEPEND=true
           CCACHE_NOFILECLONE=true
           CCACHE_NOHARDLINK=true
           CCACHE_INODECACHE=true
           CCACHE_NLEVELS=4
           CCACHE_COMPILERCHECK=content
-          CCACHE_DIRECT=true
+          CCACHE_DEPEND=true
           EOF
 
           # Setup CCACHE Dir
@@ -170,7 +174,7 @@ jobs:
             tarballs-${{ runner.os }}-${{ matrix.target }}-${{
             hashFiles(format('targets/{0}/config', matrix.target)) }}
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: '${{ matrix.target }}.tar.xz'
           path: '${{ matrix.target }}.tar.xz'
@@ -185,7 +189,7 @@ jobs:
           retention-days: 1
   release:
     name: Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     needs:
       - build
     if: |
@@ -219,10 +223,11 @@ jobs:
           prerelease: false
           draft: false
           generate_release_notes: false
-          make_latest: false
+          make_latest: true
           files: release/*-*-*.tar.*
           body_path: RELEASE.md
-      - name: Finalize Release
+      - if: '${{ inputs.release_name != '''' && inputs.make_release }}'
+        name: Finalize Release
         env:
           GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         run: |
