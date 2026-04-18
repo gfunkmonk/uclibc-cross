@@ -1,6 +1,6 @@
 --- a/libc/sysdeps/linux/powerpc/clone.S
 +++ b/libc/sysdeps/linux/powerpc/clone.S
-@@ -45,7 +45,15 @@
+@@ -45,7 +45,17 @@
  	stwu	1,-16(1)
  
  	/* Save the function pointer and arg on the new stack.  */
