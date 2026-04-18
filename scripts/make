@@ -50,6 +50,10 @@ pushd builder
 git reset --hard HEAD
 git clean -fd
 shopt -s nullglob
+for f in targets/powerpcle-unknown-linux-uclibc/0002-powerpc-fix-clone-little-endian.patch \
+         targets/powerpcle-unknown-linux-uclibcsf/0002-powerpc-fix-clone-little-endian.patch; do
+    [[ $(tail -c1 "$f" | wc -l) -eq 0 ]] && echo "" >> "$f"
+done
 for i in ../targets/"${TARGET}"/*.patch; do
     if grep -qE "^\+\+\+ b/packages/" "$i"; then
         # Wrapped package patch — apply it to create the patch file in place
