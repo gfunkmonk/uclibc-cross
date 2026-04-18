@@ -3,7 +3,7 @@ name: Release
   workflow_dispatch:
     inputs:
       freespace:
-        description: F̳r̳e̳e̳ ̳D̳i̳s̳k̳ ̳S̳p̳a̳c̳e̳
+        description: Free-up Space
         required: true
         type: boolean
         default: false
@@ -91,10 +91,10 @@ jobs:
         with:
           swap-storage: false
           large-packages: true
-          tool-cache: true
+          tool-cache: false
           android: true
           dotnet: true
-          haskell: false
+          haskell: true
           docker-images: true
       - if: '${{ inputs.swapspace }}'
         name: Add Swap Space for Build
