@@ -6,6 +6,7 @@
      CT_DoExecLog ALL cp -av "${CT_SRC_DIR}/uClibc-ng/." .
 +    CT_DoLog EXTRA "Stripping @local from powerpc ldso sources"
 +    CT_DoExecLog ALL find ldso/ldso/powerpc/ \( -name "*.S" -o -name "*.h" \) -exec sed -i 's/@local//g' {} +
- 
++    CT_DoLog EXTRA "Fix syscall stupid"
++    CT_DoExecLog ALL sed -i 's/sizeof (__arg\([1-6]\)) > 4/sizeof (__arg\1) > sizeof(long)/g' libc/sysdeps/linux/powerpc/bits/syscalls.h 
      # Force the date of the pregen locale data, as the
      # newer ones that are referenced are not available
