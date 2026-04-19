@@ -1,9 +1,9 @@
 --- a/packages/uClibc-ng/1.0.57/0002-alpha-fix-init-fini-arrays.patch
 +++ b/packages/uClibc-ng/1.0.57/0002-alpha-fix-init-fini-arrays.patch
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,42 @@
 +--- a/libc/sysdeps/linux/alpha/crti.S
 ++++ b/libc/sysdeps/linux/alpha/crti.S
-+@@ -41,3 +41,13 @@
++@@ -41,3 +41,18 @@
 + 	.end _fini
 + 	
 + 	.ident	"GCC: (GNU) 3.3.2"
@@ -17,9 +17,14 @@
 ++.globl __fini_array_start
 ++.hidden __fini_array_start
 ++__fini_array_start:
+++
+++.section .preinit_array,"aw"
+++.globl __preinit_array_start
+++.hidden __preinit_array_start
+++__preinit_array_start:
 +--- a/libc/sysdeps/linux/alpha/crtn.S
 ++++ b/libc/sysdeps/linux/alpha/crtn.S
-+@@ -11,3 +11,13 @@
++@@ -11,3 +11,18 @@
 + 	ldq $26,0($30)
 + 	lda $30,16($30)
 + 	ret $31,($26),1
@@ -33,3 +38,8 @@
 ++.globl __fini_array_end
 ++.hidden __fini_array_end
 ++__fini_array_end:
+++
+++.section .preinit_array,"aw"
+++.globl __preinit_array_end
+++.hidden __preinit_array_end
+++__preinit_array_end:
