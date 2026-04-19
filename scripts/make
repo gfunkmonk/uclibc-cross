@@ -78,12 +78,12 @@ case "${TARGET}" in
         ;;
     sparc-unknown-linux-uclibc)
         export ARCH="sparc"
-        export TARGET_CFLAGS="v8"
+        export TARGET_CFLAGS="v8 -m32"
         ;;
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc64"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
-        export TARGET_CFLAGS="v9"
+        export TARGET_CFLAGS="v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
         export ARCH="s390"
