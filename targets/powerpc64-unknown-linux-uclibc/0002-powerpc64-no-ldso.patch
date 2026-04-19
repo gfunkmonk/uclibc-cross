@@ -1,4 +1,0 @@
---- a/extra/Configs/Config.powerpc
-+++ b/extra/Configs/Config.powerpc
-@@ -13,0 +14 @@
-+	select ARCH_HAS_NO_LDSO
