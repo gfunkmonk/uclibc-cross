@@ -73,7 +73,6 @@ case "${TARGET}" in
     powerpc64le-unknown-linux-uclibc)
         export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2"
         ;;
-
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc64"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
@@ -97,8 +96,8 @@ case "${TARGET}" in
         ;;
 esac
 
-export CROSS_COMPILE="${TARGET}-"
 
+export CROSS_COMPILE="${TARGET}-"
 # build
 rm -rf build
 mkdir -p build
