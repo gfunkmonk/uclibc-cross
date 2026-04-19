@@ -50,18 +50,6 @@ for i in ../targets/"${TARGET}"/*.patch; do
     fi
 done
 shopt -u nullglob
-# We use a heredoc to create a clean variable without backslash-newline hell
-read -r -d '' INJECT_COMMANDS << 'EOF'
-    CT_DoLog EXTRA "Stripping @local from powerpc ldso sources"
-    CT_DoExecLog ALL find ldso/ldso/powerpc/ \( -name "*.S" -o -name "*.h" \) -exec sed -i 's/@local//g' {} +
-    CT_DoLog EXTRA "Fix syscall stupid"
-    CT_DoExecLog ALL sed -i 's/sizeof (__arg\([1-6]\)) > 4/sizeof (__arg\1) > sizeof(long)/g' libc/sysdeps/linux/powerpc/bits/syscalls.h
-    CT_DoLog EXTRA "No LDSO"
-    CT_DoExecLog ALL sed -i '/config ARCH_any_powerpc/a \	select ARCH_HAS_NO_LDSO' extra/Configs/Config.powerpc
-EOF
-
-# Now inject it into the crosstool-ng script
-sed -i "/uClibc-ng\/\./a ${INJECT_COMMANDS}" scripts/build/libc/uClibc-ng.sh
 popd
 
 # crosstool-ng
