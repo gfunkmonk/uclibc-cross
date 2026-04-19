@@ -1,0 +1,11 @@
+--- a/scripts/build/libc/uClibc-ng.sh
++++ b/scripts/build/libc/uClibc-ng.sh
+@@ -53,6 +53,8 @@
+     # Simply copy files until uClibc has the ability to build out-of-tree
+     CT_DoLog EXTRA "Copying sources to build dir"
+     CT_DoExecLog ALL cp -av "${CT_SRC_DIR}/uClibc-ng/." .
++    CT_DoLog EXTRA "Stripping @local from powerpc ldso sources"
++    CT_DoExecLog ALL find ldso/ldso/powerpc/ \( -name "*.S" -o -name "*.h" \) -exec sed -i 's/@local//g' {} +
+ 
+     # Force the date of the pregen locale data, as the
+     # newer ones that are referenced are not available

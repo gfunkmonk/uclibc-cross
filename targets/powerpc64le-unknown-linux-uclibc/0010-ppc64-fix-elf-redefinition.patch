@@ -1,0 +1,16 @@
+--- a/packages/uClibc-ng/1.0.57/0010-ppc64-fix-elf-redefinition.patch
++++ b/packages/uClibc-ng/1.0.57/0010-ppc64-fix-elf-redefinition.patch
+@@ -0,0 +1,12 @@
++--- a/include/elf.h
+++++ b/include/elf.h
++@@ -2557,7 +2557,9 @@
++ #define R_PPC64_TPREL16_HIGHESTA 104
++ #define R_PPC64_DTPREL16_HIGHESTA 105
++ #define R_PPC64_REL24_P9	 106
+++#ifndef R_PPC64_NUM
++ #define R_PPC64_NUM		 107
+++#endif
++ 
++ /* Keep this the last entry.  */
++ #define R_PPC64_RELATIVE	22
+
