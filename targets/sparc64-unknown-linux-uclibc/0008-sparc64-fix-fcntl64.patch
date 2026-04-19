@@ -1,11 +1,12 @@
 --- a/packages/uClibc-ng/1.0.57/0008-sparc64-fix-fcntl64.patch
 +++ b/packages/uClibc-ng/1.0.57/0008-sparc64-fix-fcntl64.patch
-@@ -0,0 +1,9 @@
+@@ -0,0 +1,10 @@
 +--- a/libc/sysdeps/linux/common/__syscall_fcntl.c
 ++++ b/libc/sysdeps/linux/common/__syscall_fcntl.c
 +@@ -68,5 +68,5 @@
-+ #if !defined __NR_fcntl64 && __WORDSIZE == 32
++-#if !defined __NR_fcntl64 && __WORDSIZE == 32
 +-strong_alias_untyped(fcntl,fcntl64)
+++#if !defined __NR_fcntl64
 ++strong_alias(fcntl,fcntl64)
 + lt_strong_alias(fcntl64)
 + lt_libc_hidden(fcntl64)
