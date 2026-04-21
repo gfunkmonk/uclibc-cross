@@ -91,13 +91,13 @@ case "${TARGET}" in
         ;;
     sparc-unknown-linux-uclibc)
         export ARCH="sparc"
-        export TARGET_CFLAGS="-mcpu=v8 -m32"
+        export TARGET_CFLAGS="-march=v8 -m32"
         ;;
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m64"
         export ASFLAGS="-m64"
-        export TARGET_CFLAGS="-mcpu=v9 -m64"
+        export TARGET_CFLAGS="-march=v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
         export ARCH="s390"
