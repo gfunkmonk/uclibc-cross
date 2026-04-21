@@ -123,11 +123,7 @@ pushd build
 popd
 
 # tarball
-# ct-ng may normalize the target triple (e.g. uclibceabi -> uclibcgnueabi),
-# so read the actual CT_TARGET from the build config instead of using $TARGET
-CT_ACTUAL=$(sed -n 's/^CT_TARGET="\(.*\)"/\1/p' build/.config)
-rm -rf "${TARGET}"
-sudo mv -T /opt/x-tools/"${CT_ACTUAL}" "${TARGET}"
+sudo mv /opt/x-tools/"${TARGET}" .
 sudo chown -R root:root "${TARGET}"
 env XZ_OPT="-T0" sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"
 sudo sha256sum "${TARGET}".tar.xz | awk '{ print $1 }' > "${TARGET}".tar.xz.sha256
