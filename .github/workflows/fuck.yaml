@@ -133,8 +133,8 @@ jobs:
           echo "CCACHE_DIR=/mnt/ccache" >> $GITHUB_ENV
           echo "CCACHE Dir Set!"
           # Setup tarballs dir for download caching
-          sudo mkdir -p /mnt/tarballs
-          sudo chown -R $USER:$USER /mnt/tarballs
+          #sudo mkdir -p /mnt/tarballs
+          #sudo chown -R $USER:$USER /mnt/tarballs
           df -h
           echo "CCACHE Environment set!"
       - name: Enable the CCACHE
@@ -147,16 +147,16 @@ jobs:
           max-size: 5000MB
           verbose: 2
           save: true
-      - name: Restore tarballs cache
-        uses: actions/cache/restore@v5
-        with:
-          path: /mnt/tarballs
-          key: >-
-            tarballs-${{ runner.os }}-${{ matrix.target }}-${{
-            hashFiles(format('targets/{0}/config', matrix.target)) }}
-          restore-keys: |
-            tarballs-${{ runner.os }}-${{ matrix.target }}-
-            tarballs-${{ runner.os }}-
+      #- name: Restore tarballs cache
+      #  uses: actions/cache/restore@v5
+      #  with:
+      #    path: /mnt/tarballs
+      #    key: >-
+      #      tarballs-${{ runner.os }}-${{ matrix.target }}-${{
+      #      hashFiles(format('targets/{0}/config', matrix.target)) }}
+      #    restore-keys: |
+      #      tarballs-${{ runner.os }}-${{ matrix.target }}-
+      #      tarballs-${{ runner.os }}-
       #- if: '${{ inputs.sshserver }}'
       #  name: SSH Server-ing
       #  uses: valeriangalliat/action-sshd-cloudflared@v4
@@ -168,14 +168,14 @@ jobs:
       - if: '${{ inputs.sshserver }}'
         name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
-      - name: Save tarballs cache
-        uses: actions/cache/save@v5
-        if: always()
-        with:
-          path: /mnt/tarballs
-          key: >-
-            tarballs-${{ runner.os }}-${{ matrix.target }}-${{
-            hashFiles(format('targets/{0}/config', matrix.target)) }}
+      #- name: Save tarballs cache
+      #  uses: actions/cache/save@v5
+      #  if: always()
+      #  with:
+      #    path: /mnt/tarballs
+      #    key: >-
+      #      tarballs-${{ runner.os }}-${{ matrix.target }}-${{
+      #      hashFiles(format('targets/{0}/config', matrix.target)) }}
       - name: Upload package
         uses: actions/upload-artifact@v7
         with:
