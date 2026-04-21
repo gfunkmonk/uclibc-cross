@@ -46,7 +46,7 @@ jobs:
         target:
           - aarch64-unknown-linux-uclibc
           - aarch64_be-unknown-linux-uclibc
-          - alphaev67-unknown-linux-uclibc
+          #- alphaev67-unknown-linux-uclibc
           - arm-unknown-linux-uclibcgnueabi
           - arm-unknown-linux-uclibcgnueabihf
           - armv4t-unknown-linux-uclibcgnueabi
@@ -71,8 +71,8 @@ jobs:
           - or1k-unknown-linux-uclibc
           - powerpc-unknown-linux-uclibc
           - powerpc-unknown-linux-uclibcsf
-          - powerpc64-unknown-linux-uclibc
-          - powerpc64le-unknown-linux-uclibc
+          #- powerpc64-unknown-linux-uclibc
+          #- powerpc64le-unknown-linux-uclibc
           - powerpcle-unknown-linux-uclibc
           - powerpcle-unknown-linux-uclibcsf
           - riscv32-unknown-linux-uclibc
@@ -81,7 +81,7 @@ jobs:
           #- s390x-ibm-linux-uclibc
           - sh4-multilib-linux-uclibc
           - sparc-unknown-linux-uclibc
-          - sparc64-unknown-linux-uclibc
+          #- sparc64-unknown-linux-uclibc
           - x86_64-unknown-linux-uclibc
     steps:
       - if: '${{ inputs.freespace }}'
