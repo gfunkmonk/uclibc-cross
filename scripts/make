@@ -123,9 +123,15 @@ export CROSS_COMPILE="${TARGET}-"
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
+#if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
+#    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
+#    echo "Copied uClibc-ng.config for ${TARGET}"
+#fi
 if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
-    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
-    echo "Copied uClibc-ng.config for ${TARGET}"
+    UCLIBC_CFG_ABS="$(realpath build)/uClibc-ng.config"
+    cp "targets/${TARGET}/uClibc-ng.config" "build/uClibc-ng.config"
+    sed -i "s|CT_LIBC_UCLIBC_CONFIG_FILE=.*|CT_LIBC_UCLIBC_CONFIG_FILE=\"${UCLIBC_CFG_ABS}\"|" build/.config
+    echo "Copied uClibc-ng.config for ${TARGET} -> ${UCLIBC_CFG_ABS}"
 fi
 # Configure tarballs directory for download caching
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
