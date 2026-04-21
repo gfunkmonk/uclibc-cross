@@ -64,27 +64,43 @@ sudo make install
 popd
 
 case "${TARGET}" in
-    alphaev67-unknown-linux-uclibx)
+    alphaev67-unknown-linux-uclibc)
+        export ARCH="alpha"
         export TARGET_CFLAGS="-march=ev67 -fno-use-linker-plugin"
         export TARGET_LDFLAGS="-fno-use-linker-plugin"
         ;;
+    hppa-unknown-linux-uclibc)
+        export ARCH="parisc"
+        export TARGET_CFLAGS="-march=1.1"
+        ;;
     loongarch64-unknown-linux-uclibc)
+        export ARCH="loongarch64"
         export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
         ;;
+    powerpc-unknown-linux-uclibc)
+        export ARCH="powerpc"
+        export TARGET_CFLAGS="-msecure-plt"
+        ;;
+    powerpcle-unknown-linux-uclibc)
+        export ARCH="powerpc"
+        export TARGET_CFLAGS="-msecure-plt"
+        ;;
     powerpc64-unknown-linux-uclibc)
+        export ARCH="powerpc"
         export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2"
         ;;
     powerpc64le-unknown-linux-uclibc)
+        export ARCH="powerpc"
         export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2"
         ;;
     sparc-unknown-linux-uclibc)
         export ARCH="sparc"
-        export TARGET_CFLAGS="v8 -m32"
+        export TARGET_CFLAGS="-march=v8 -m32"
         ;;
     sparc64-unknown-linux-uclibc)
-        export ARCH="sparc64"
+        export ARCH="sparc"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
-        export TARGET_CFLAGS="v9 -m64"
+        export TARGET_CFLAGS="-march=v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
         export ARCH="s390"
@@ -92,7 +108,7 @@ case "${TARGET}" in
         export TARGET_LDFLAGS="-m31"
         ;;
     s390x-ibm-linux-uclibc)
-        export ARCH="s390x"
+        export ARCH="s390"
         export TARGET_CFLAGS="-march=z196 -m64"
         export TARGET_LDFLAGS="-m64"
         ;;
@@ -117,6 +133,14 @@ fi
 # Configure tarballs directory for download caching
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
+
+if [[ -n "${TARGET_CFLAGS}" ]]; then
+    echo "CT_TARGET_CFLAGS=\"${TARGET_CFLAGS}\"" >> build/.config
+fi
+if [[ -n "${TARGET_LDFLAGS}" ]]; then
+    echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
+fi
+
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
 /opt/ct-ng/bin/ct-ng build."$(nproc)" ${EXTRA_CT_NG_ARGS}
