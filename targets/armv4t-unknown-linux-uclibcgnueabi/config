@@ -4,7 +4,7 @@ CT_PREFIX_DIR="/opt/x-tools/${CT_TARGET}"
 # CT_LOG_PROGRESS_BAR is not set
 CT_ARCH_ARM=y
 CT_ARCH_SUFFIX="v4t"
-CT_ARCH_CPU="armv4t"
+CT_ARCH_ARCH="armv4t"
 CT_ARCH_TUNE="arm9tdmi"
 CT_ARCH_FLOAT_SW=y
 CT_KERNEL_LINUX=y
