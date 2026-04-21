@@ -111,6 +111,5 @@ jobs:
           restore-keys: |
             tarballs-${{ runner.os }}-${{ matrix.target }}-
             tarballs-${{ runner.os }}-
-      - if: '${{ inputs.sshserver }}'
-        name: SSH Server-ing
+      - name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
