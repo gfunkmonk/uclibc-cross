@@ -95,8 +95,8 @@ case "${TARGET}" in
         ;;
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc"
-        EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
-        export ASFLAGS="-64"
+        EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m64"
+        export ASFLAGS="-m64"
         export TARGET_CFLAGS="-mcpu=v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
