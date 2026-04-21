@@ -7,6 +7,7 @@ CT_ARCH_32=y
 #CT_ARCH_ARCH="v8"
 #CT_ARCH_TUNE="supersparc"
 # CT_ARCH_64 is not set
+CT_CC_GCC_EXTRA_CONFIG_ARRAY="--disable-libitm"
 CT_KERNEL_LINUX=y
 CT_LINUX_V_6_18=y
 CT_LIBC_UCLIBC_NG=y
