@@ -164,7 +164,7 @@ jobs:
         run: |
           sudo rm -rf /opt/*
           ./scripts/make ${{ matrix.target }}
-        continue-on-error: true
+        continue-on-error: false
       - if: '${{ inputs.sshserver }}'
         name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
