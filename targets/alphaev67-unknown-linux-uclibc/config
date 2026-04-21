@@ -29,8 +29,8 @@ CT_LOG_LEVEL_MAX="ALL"
 # Ensure these are set in your target configs
 CT_GCC_LTO=n
 CT_LIBC_UCLIBC_DEBUG_LEVEL_0=y
-CT_TARGET_LDFLAGS="-Wl,--no-check-sections"
 CT_LIBC_UCLIBC_CONFIG_FILE=$(pwd)/uClibc-ng.config
+CT_CC_GCC_EXTRA_CONFIG_ARRAY="--disable-fixed-point"
 CT_LOG_ALL=y
 # CT_LOG_DEBUG is not set
 CT_LOG_LEVEL_MAX="ALL"

@@ -67,11 +67,7 @@ case "${TARGET}" in
     alphaev67-unknown-linux-uclibc)
         export ARCH="alpha"
         export TARGET_CFLAGS="-march=ev67 -fno-use-linker-plugin"
-        export TARGET_LDFLAGS="-fno-use-linker-plugin"
-        ;;
-    hppa-unknown-linux-uclibc)
-        export ARCH="parisc"
-        export TARGET_CFLAGS="-march=1.1"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         ;;
     loongarch64-unknown-linux-uclibc)
         export ARCH="loongarch64"
@@ -87,11 +83,11 @@ case "${TARGET}" in
         ;;
     powerpc64-unknown-linux-uclibc)
         export ARCH="powerpc"
-        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2"
+        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2 -mminimal-toc"
         ;;
     powerpc64le-unknown-linux-uclibc)
         export ARCH="powerpc"
-        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2"
+        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2 -mminimal-toc"
         ;;
     sparc-unknown-linux-uclibc)
         export ARCH="sparc"
@@ -100,6 +96,7 @@ case "${TARGET}" in
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
+        export ASFLAGS="-64"
         export TARGET_CFLAGS="-march=v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
