@@ -105,7 +105,7 @@ case "${TARGET}" in
         export TARGET_LDFLAGS="-m31"
         ;;
     s390x-ibm-linux-uclibc)
-        export ARCH="s390"
+        export ARCH="s390x"
         export TARGET_CFLAGS="-march=z196 -m64"
         export TARGET_LDFLAGS="-m64"
         ;;
