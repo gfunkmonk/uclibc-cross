@@ -70,8 +70,8 @@ popd
 
 case "${TARGET}" in
     alphaev67-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=ev67 -fno-use-linker-plugin"
-        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mcpu=ev67"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections"
         ;;
     loongarch64-unknown-linux-uclibc)
         export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"

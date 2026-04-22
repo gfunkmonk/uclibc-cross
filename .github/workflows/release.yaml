@@ -44,45 +44,15 @@ jobs:
       fail-fast: false
       matrix:
         target:
-          - aarch64-unknown-linux-uclibc
-          - aarch64_be-unknown-linux-uclibc
-          - alphaev67-unknown-linux-uclibc
-          - arm-unknown-linux-uclibcgnueabi
-          - arm-unknown-linux-uclibcgnueabihf
-          - armv4t-unknown-linux-uclibcgnueabi
-          - armv5-unknown-linux-uclibcgnueabi
-          - armv6-unknown-linux-uclibcgnueabi
-          - armv6-unknown-linux-uclibcgnueabihf
-          - armv7-unknown-linux-uclibcgnueabi
-          - armv7-unknown-linux-uclibcgnueabihf
-          - hppa-unknown-linux-uclibc
-          - i486-unknown-linux-uclibc
-          - i586-unknown-linux-uclibc
+          - aarch64-rpi3-linux-uclibc
+          - aarch64-rpi4-linux-uclibc
+          - armv7-rpi2-linux-uclibcgnueabihf
+          - armv8-rpi3-linux-uclibcgnueabihf
+          - armv8-rpi4-linux-uclibcgnueabihf
           - i686-unknown-linux-uclibc
-          - m68k-unknown-linux-uclibc
-          - microblaze-xilinx-linux-uclibc
-          - microblazeel-xilinx-linux-uclibc
-          - mips-unknown-linux-uclibc
-          - mips-unknown-linux-uclibcsf
-          - mips64-unknown-linux-uclibc
-          - mips64el-unknown-linux-uclibc
-          - mipsel-unknown-linux-uclibc
-          - mipsel-unknown-linux-uclibcsf
-          - or1k-unknown-linux-uclibc
-          - powerpc-unknown-linux-uclibc
-          - powerpc-unknown-linux-uclibcsf
-          - powerpc64-unknown-linux-uclibc
-          - powerpc64le-unknown-linux-uclibc
-          - powerpcle-unknown-linux-uclibc
-          - powerpcle-unknown-linux-uclibcsf
-          - riscv32-unknown-linux-uclibc
-          - riscv64-unknown-linux-uclibc
-          - s390-ibm-linux-uclibc
-          - s390x-ibm-linux-uclibc
-          - sh4-multilib-linux-uclibc
-          - sparc-unknown-linux-uclibc
           - sparc64-unknown-linux-uclibc
           - x86_64-unknown-linux-uclibc
+
     steps:
       - if: '${{ inputs.freespace }}'
         name: Free Up Disk Space
