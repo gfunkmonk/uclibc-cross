@@ -68,66 +68,18 @@ make -j"$(nproc)"
 sudo make install
 popd
 
-case "${TARGET}" in
-    alphaev67-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=ev67"
-        export TARGET_LDFLAGS="-Wl,--no-check-sections"
-        ;;
-    loongarch64-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
-        ;;
-    powerpc-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-msecure-plt"
-        ;;
-    powerpcle-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-msecure-plt"
-        ;;
-    powerpc64-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2 -mminimal-toc -fPIC"
-        ;;
-    powerpc64le-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mpowerpc64 -m64 -mabi=elfv2 -mminimal-toc -fPIC"
-        ;;
-    sparc-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-march=v8 -m32"
-        ;;
-    sparc64-unknown-linux-uclibc)
-        EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m64"
-        export ASFLAGS="-m64"
-        export TARGET_CFLAGS="-march=v9 -m64"
-        ;;
-    s390-ibm-linux-uclibc)
-        export TARGET_CFLAGS="-march=z9-109 -m31"
-        export TARGET_LDFLAGS="-m31"
-        ;;
-    s390x-ibm-linux-uclibc)
-        export TARGET_CFLAGS="-march=z196 -m64"
-        export TARGET_LDFLAGS="-m64"
-        ;;
-#    *)
-#        UCLIBC_ARCH=$(echo "${TARGET}" | cut -d- -f1 | sed -E 's/(64|le|be)//g')
-#        echo "Force-setting ARCH=${UCLIBC_ARCH} for uClibc-ng safety"
-#        export ARCH="${UCLIBC_ARCH}"
-#        EXTRA_CT_NG_ARGS=""
-#        ;;
-esac
-
-
-#export CROSS_COMPILE="${TARGET}-"
 # build
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
-#if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
-#    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
-#    echo "Copied uClibc-ng.config for ${TARGET}"
-#fi
+
 if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
     UCLIBC_CFG_ABS="$(realpath build)/uClibc-ng.config"
     cp "targets/${TARGET}/uClibc-ng.config" "build/uClibc-ng.config"
     sed -i "s|CT_LIBC_UCLIBC_CONFIG_FILE=.*|CT_LIBC_UCLIBC_CONFIG_FILE=\"${UCLIBC_CFG_ABS}\"|" build/.config
     echo "Copied uClibc-ng.config for ${TARGET} -> ${UCLIBC_CFG_ABS}"
 fi
+
 # Configure tarballs directory for download caching
 #echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 #echo 'CT_SAVE_TARBALLS=y' >> build/.config
