@@ -34,13 +34,16 @@ if [ ! -f /etc/apt/sources.list.d/kitware.list ]; then
 fi
 
 # packages
-sudo apt-get update -qy
-sudo apt-get install -y --no-install-recommends \
-  automake bison bzip2 ca-certificates cmake \
-  curl file flex g++ gawk gdb git gperf help2man \
-  libncurses-dev libssl-dev libtool-bin make patch \
-  pkg-config python3 rsync texinfo unzip wget xz-utils \
-  libzstd-dev
+export DEBIAN_FRONTEND=noninteractive
+PACKAGES=(
+    automake bison build-essential bzip2 ca-certificates cmake curl 
+    file flex gawk gdb git gperf help2man libncurses-dev libssl-dev 
+    libtool-bin libzstd-dev pkg-config python3 rsync texinfo unzip 
+    wget xz-utils
+)
+
+sudo -E apt-get update -qy
+sudo -E apt-get install -y --no-install-recommends "${PACKAGES[@]}"
 
 # Add newline to patches without one
 find targets/ -name "*.patch" | while read -r f; do
