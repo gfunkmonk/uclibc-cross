@@ -13,6 +13,4 @@ CT_CC_LANG_CXX=y
 CT_LINKER_MOLD=y
 CT_GCC_V_15=y
 CT_BINUTILS_V_2_46=y
-# Ensure these are set in your target configs
-CT_GCC_LTO=n
-CT_LIBC_UCLIBC_DEBUG_LEVEL_0=y
+# CT_SHOW_CT_VERSION is not set yet
