@@ -71,8 +71,8 @@ jobs:
           #- or1k-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibcsf
-          - powerpcle-unknown-linux-uclibc
-          - powerpcle-unknown-linux-uclibcsf
+          #- powerpcle-unknown-linux-uclibc
+          #- powerpcle-unknown-linux-uclibcsf
           - riscv32-unknown-linux-uclibc
           - riscv64-unknown-linux-uclibc
           #- sh4-multilib-linux-uclibc
