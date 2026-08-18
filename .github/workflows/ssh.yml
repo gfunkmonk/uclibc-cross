@@ -55,7 +55,7 @@ jobs:
           #- x86_64-unknown-linux-uclibc
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           submodules: true
@@ -102,7 +102,7 @@ jobs:
           verbose: 2
           save: true
       - name: Restore tarballs cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: /mnt/tarballs
           key: >-
