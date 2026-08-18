@@ -159,6 +159,14 @@ jobs:
         run: |
           sudo rm -rf /opt/*
           ./scripts/make ${{ matrix.target }}
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: '${{ matrix.target }}-build.log'
+          path: build/build.log
+          if-no-files-found: warn
+          retention-days: 7
       - name: Save tarballs cache
         uses: actions/cache/save@v6
         if: always()
