@@ -66,8 +66,8 @@ popd
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
         export ARCH="alpha"
-        export TARGET_CFLAGS="-march=ev67 -fno-use-linker-plugin"
-        #export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         ;;
     loongarch64-unknown-linux-uclibc)
         export ARCH="loongarch64"
@@ -99,14 +99,16 @@ case "${TARGET}" in
         ;;
     #sparc-unknown-linux-uclibc)
     #    export ARCH="sparc"
-    #    export TARGET_CFLAGS="-march=v9 -m32"
+    #    EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m32"
+    #    export ASFLAGS="-m32"
+    #    export TARGET_CFLAGS="-mcpu=v8"
     #    ;;
-    sparc64-unknown-linux-uclibc)
-        export ARCH="sparc"
-        EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m64"
-        export ASFLAGS="-m64"
-        export TARGET_CFLAGS="-march=v9 -m64"
-        ;;
+    #sparc64-unknown-linux-uclibc)
+    #    export ARCH="sparc"
+    #    EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-m64"
+    #    export ASFLAGS="-m64"
+    #    export TARGET_CFLAGS="-mcpu=ultrasparc"
+    #    ;;
     s390-ibm-linux-uclibc)
         export ARCH="s390"
         export TARGET_CFLAGS="-march=z9-109 -m31"
