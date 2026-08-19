@@ -77,10 +77,10 @@ jobs:
           #- riscv32-unknown-linux-uclibc
           #- riscv64-unknown-linux-uclibc
           #- sh4-multilib-linux-uclibc
-          - sparc-unknown-linux-uclibc
+          #- sparc-unknown-linux-uclibc
           - sparc64-unknown-linux-uclibc
-          - powerpc64-unknown-linux-uclibc
-          - powerpc64le-unknown-linux-uclibc
+          #- powerpc64-unknown-linux-uclibc
+          #- powerpc64le-unknown-linux-uclibc
           - s390-ibm-linux-uclibc
           - s390x-ibm-linux-uclibc
           #- x86_64-unknown-linux-uclibc
