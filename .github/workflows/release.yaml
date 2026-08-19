@@ -40,7 +40,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-26.04
-    timeout-minutes: 180
     strategy:
       fail-fast: false
       matrix:
@@ -163,9 +162,15 @@ jobs:
         name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
       - name: Build
-        run: |
-          sudo rm -rf /opt/*
-          ./scripts/make ${{ matrix.target }}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 140
+          max_attempts: 2
+          command: |
+            umask 0022
+            sudo rm -rf /opt/*
+            chmod +x ./scripts/make
+            bash ./scripts/make ${{ matrix.target }}
       - name: Upload build log
         if: failure()
         uses: actions/upload-artifact@v7
