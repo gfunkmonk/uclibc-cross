@@ -33,7 +33,7 @@ name: Pizza
         default: ''
 concurrency:
   group: '${{ github.workflow }}-${{ github.ref }}'
-ubuntu-26.04  cancel-in-progress: true
+cancel-in-progress: true
 permissions:
   contents: read
 jobs:
