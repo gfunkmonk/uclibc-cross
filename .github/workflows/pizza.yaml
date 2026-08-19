@@ -55,6 +55,7 @@ jobs:
           #- armv6-unknown-linux-uclibcgnueabihf
           #- armv7-unknown-linux-uclibcgnueabi
           #- armv7-unknown-linux-uclibcgnueabihf
+          - alpha-unknown-linux-uclibc
           #- hppa-unknown-linux-uclibc
           #- i486-unknown-linux-uclibc
           #- i586-unknown-linux-uclibc
@@ -70,13 +71,18 @@ jobs:
           #- mipsel-unknown-linux-uclibcsf
           #- or1k-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibc
+          - powerpc64-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibcsf
           #- powerpcle-unknown-linux-uclibc
+          - powerpc64le-unknown-linux-uclibc
           #- powerpcle-unknown-linux-uclibcsf
           - riscv32-unknown-linux-uclibc
           - riscv64-unknown-linux-uclibc
+          - s390-ibm-linux-uclibc
+          - s390x-ibm-linux-uclibc
           #- sh4-multilib-linux-uclibc
           - sparc-unknown-linux-uclibc
+          - sparc64-unknown-linux-uclibc
           #- x86_64-unknown-linux-uclibc
     steps:
       - if: '${{ inputs.freespace }}'

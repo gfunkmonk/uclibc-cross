@@ -64,7 +64,7 @@ sudo make install
 popd
 
 case "${TARGET}" in
-    alphaev67-unknown-linux-uclibc)
+    alpha-unknown-linux-uclibc)
         export ARCH="alpha"
         export TARGET_CFLAGS="-march=ev67 -fno-use-linker-plugin"
         export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
@@ -91,21 +91,21 @@ case "${TARGET}" in
         ;;
     riscv32-unknown-linux-uclibc)
         export ARCH="riscv"
-        export TARGET_CFLAGS="-march=rv32g -mabi=ilp32d -fPIC"
+        export TARGET_CFLAGS="-march=rv32g -mabi=ilp32d"
         ;;
     riscv64-unknown-linux-uclibc)
         export ARCH="riscv"
-        export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d -fPIC"
+        export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d"
         ;;
     sparc-unknown-linux-uclibc)
         export ARCH="sparc"
-        export TARGET_CFLAGS="-mcpu=v8 -m32"
+        export TARGET_CFLAGS="-march=v8 -m32"
         ;;
     sparc64-unknown-linux-uclibc)
         export ARCH="sparc"
         EXTRA_CT_NG_ARGS="CT_TARGET_ASFLAGS=-64"
         export ASFLAGS="-64"
-        export TARGET_CFLAGS="-mcpu=v9 -m64"
+        export TARGET_CFLAGS="-march=v9 -m64"
         ;;
     s390-ibm-linux-uclibc)
         export ARCH="s390"
@@ -133,6 +133,7 @@ mkdir -p build
 cp targets/"${TARGET}"/config build/.config
 if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
     cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
+    echo "CT_LIBC_UCLIBC_CONFIG_FILE=\"$(pwd)/build/uClibc-ng.config\"" >> build/.config
     echo "Copied uClibc-ng.config for ${TARGET}"
 fi
 # Configure tarballs directory for download caching
