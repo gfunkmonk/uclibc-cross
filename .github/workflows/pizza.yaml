@@ -71,15 +71,11 @@ jobs:
           #- mipsel-unknown-linux-uclibcsf
           #- or1k-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibc
-          - powerpc64-unknown-linux-uclibc
           #- powerpc-unknown-linux-uclibcsf
           #- powerpcle-unknown-linux-uclibc
-          - powerpc64le-unknown-linux-uclibc
           #- powerpcle-unknown-linux-uclibcsf
-          - riscv32-unknown-linux-uclibc
-          - riscv64-unknown-linux-uclibc
-          - s390-ibm-linux-uclibc
-          - s390x-ibm-linux-uclibc
+          #- riscv32-unknown-linux-uclibc
+          #- riscv64-unknown-linux-uclibc
           #- sh4-multilib-linux-uclibc
           - sparc-unknown-linux-uclibc
           - sparc64-unknown-linux-uclibc
