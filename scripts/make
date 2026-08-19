@@ -67,7 +67,8 @@ popd
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
+        #export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mieee -fno-use-linker-plugin"
         export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         ;;
     loongarch64-unknown-linux-uclibc)
@@ -89,7 +90,7 @@ case "${TARGET}" in
         export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d"
         ;;
     sparc-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=v8"
+        export TARGET_CFLAGS="-mcpu=v9"
         ;;
     sparc64-unknown-linux-uclibc)
 	export TARGET_ASFLAGS="-m64"
@@ -119,7 +120,12 @@ if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
     echo "CT_LIBC_UCLIBC_CONFIG_FILE=\"$(pwd)/build/uClibc-ng.config\"" >> build/.config
     echo "Copied uClibc-ng.config for ${TARGET}"
 fi
+
 # Configure tarballs directory for download caching
+if [[  ! -d "/mnt/tarballs" ]]; then
+  sudo mkdir -p /mnt/tarballs 
+  sudo chmod 0777 /mnt/tarballs
+fi
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 
