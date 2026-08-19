@@ -39,8 +39,7 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
@@ -152,13 +151,26 @@ jobs:
           restore-keys: |
             tarballs-${{ runner.os }}-${{ matrix.target }}-
             tarballs-${{ runner.os }}-
+      - name: CCACHE Cache
+        uses: actions/cache@v6
+        with:
+          path: /mnt/ccache
+          key: ccache-${{ matrix.target }}-${{ github.run_id }}
+          restore-keys: |
+            ccache-${{ matrix.target }}-
       - if: '${{ inputs.sshserver }}'
         name: SSH Server-ing
         uses: valeriangalliat/action-sshd-cloudflared@v4
       - name: Build
-        run: |
-          sudo rm -rf /opt/*
-          ./scripts/make ${{ matrix.target }}
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 140
+          max_attempts: 2
+          command: |
+            umask 0022
+            sudo rm -rf /opt/*
+            chmod +x ./scripts/make
+            bash ./scripts/make ${{ matrix.target }}
       - name: Upload build log
         if: failure()
         uses: actions/upload-artifact@v7
