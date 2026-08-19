@@ -42,8 +42,8 @@ for i in ../targets/"${TARGET}"/*.patch; do
         patch -Np1 -i "$i"
     elif grep -qE "^\+\+\+ b/(libc|ldso|extra)/" "$i"; then
         # Raw/unwrapped package patch — copy directly for ct-ng to consume
-        mkdir -p "packages/uClibc-ng/1.0.57"
-        cp "$i" "packages/uClibc-ng/1.0.57/$(basename "$i")"
+        mkdir -p "packages/uClibc-ng/1.0.58"
+        cp "$i" "packages/uClibc-ng/1.0.58/$(basename "$i")"
     else
         # ct-ng core patch (scripts/build/arch etc.)
         patch -Np1 -i "$i"
