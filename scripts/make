@@ -67,9 +67,8 @@ popd
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
-        #export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
-        export TARGET_CFLAGS="-mcpu=ev67 -mieee"
-        #export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         ;;
     loongarch64-unknown-linux-uclibc)
         export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
@@ -95,9 +94,6 @@ case "${TARGET}" in
     sparc64-unknown-linux-uclibc)
         export TARGET_ASFLAGS="-m64"
         export TARGET_CFLAGS="-mcpu=ultrasparc3 -m64 -mno-app-regs"
-        export TARGET_LDFLAGS="-m64"
-        #export TARGET_CFLAGS="-mcpu=ultrasparc3"
-        #export TARGET_CFLAGS="-m64 -pipe -mno-fpu -mcpu=ultrasparc -mcmodel=medlow -ffixed-g4 -ffixed-g5 -fcall-used-g7 -Wno-sign-compare -Wa,--undeclared-regs"
         ;;
     s390-ibm-linux-uclibc)
         export TARGET_CFLAGS="-march=z9-109 -mtune=z10 -m31"
