@@ -81,8 +81,8 @@ fi
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
-        #export TARGET_CFLAGS="-mcpu=ev5 -mieee -fno-use-linker-plugin"
-        #export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mcpu=ev5 -mieee -fno-use-linker-plugin"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         export TARGET_DEBUG="true"
         ;;
     loongarch64-unknown-linux-uclibc)
@@ -97,17 +97,17 @@ case "${TARGET}" in
     riscv64-unknown-linux-uclibc)
         export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d"
         ;;
-    #sparc-unknown-linux-uclibc)
-    #    export TARGET_ASFLAGS="-32"
-    #    export TARGET_CFLAGS="-mcpu=v9 -m32"
-    #    export TARGET_LDFLAGS="-m32"
-    #    ;;
-    #sparc64-unknown-linux-uclibc)
-    #    export TARGET_ASFLAGS="-64"
-    #    export TARGET_CFLAGS="-mcpu=v9 -Wno-pointer-to-int-cast -m64"
-    #    export TARGET_LDFLAGS="-m64"
-    #    export TARGET_DEBUG="true"
-    #    ;;
+    sparc-unknown-linux-uclibc)
+        export TARGET_ASFLAGS="-32"
+        export TARGET_CFLAGS="-mcpu=v9 -m32"
+        export TARGET_LDFLAGS="-m32"
+        ;;
+    sparc64-unknown-linux-uclibc)
+        export TARGET_ASFLAGS="-64"
+        export TARGET_CFLAGS="-mcpu=v9 -Wno-pointer-to-int-cast -m64"
+        export TARGET_LDFLAGS="-m64"
+        export TARGET_DEBUG="true"
+        ;;
     *)
         echo "Using default config settings for ${TARGET}"
         ;;
