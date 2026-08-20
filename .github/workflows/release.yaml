@@ -207,7 +207,7 @@ jobs:
     needs:
       - build
     if: |
-      success() && github.event.inputs.make_release == 'true'
+      !cancelled() && github.event.inputs.make_release == 'true'
     permissions:
       contents: write
     steps:
