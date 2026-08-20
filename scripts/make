@@ -78,52 +78,6 @@ else
     echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
 fi
 
-EXTRA_CT_NG_ARGS=""
-case "${TARGET}" in
-    alpha-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=ev6 -fno-use-linker-plugin"
-        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
-        export TARGET_DEBUG="true"
-        ;;
-    loongarch64-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
-        ;;
-    powerpc-unknown-linux-uclibc | powerpcle-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-msecure-plt"
-        ;;
-    riscv32-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-march=rv32g -mabi=ilp32d"
-        ;;
-    riscv64-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d"
-        ;;
-    sparc-unknown-linux-uclibc)
-        export TARGET_ASFLAGS="-32"
-        export TARGET_CFLAGS="-mcpu=v9 -m32"
-        export TARGET_LDFLAGS="-m32"
-        ;;
-    sparc64-unknown-linux-uclibc)
-        export TARGET_ASFLAGS="-64"
-        export TARGET_CFLAGS="-mcpu=v9 -Wno-pointer-to-int-cast -m64"
-        export TARGET_LDFLAGS="-m64"
-        export TARGET_DEBUG="true"
-        ;;
-    *)
-        echo "Using default config settings for ${TARGET}"
-        ;;
-esac
-
-
-export CROSS_COMPILE="${TARGET}-"
-# build
-rm -rf build
-mkdir -p build
-cp targets/"${TARGET}"/config build/.config
-if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
-    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
-    echo "CT_LIBC_UCLIBC_CONFIG_FILE=\"$(pwd)/build/uClibc-ng.config\"" >> build/.config
-    echo "Copied uClibc-ng.config for ${TARGET}"
-fi
 
 # Configure tarballs directory for download caching
 if [[  ! -d "/mnt/tarballs" ]]; then
@@ -134,29 +88,9 @@ fi
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 
-if [[ "${TARGET_DEBUG}" == "true" ]]; then
-    printf '\n' >> build/.config
-    printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
-    printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
-    printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
-fi
-
-if [[ -n "${TARGET_ASFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_ASFLAGS=/d' build/.config
-    echo "CT_TARGET_ASFLAGS=\"${TARGET_ASFLAGS}\"" >> build/.config
-fi
-if [[ -n "${TARGET_CFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_CFLAGS=/d' build/.config
-    echo "CT_TARGET_CFLAGS=\"${TARGET_CFLAGS}\"" >> build/.config
-fi
-if [[ -n "${TARGET_LDFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_LDFLAGS=/d' build/.config
-    echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
-fi
-
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
-/opt/ct-ng/bin/ct-ng build."$(nproc)" ${EXTRA_CT_NG_ARGS}
+/opt/ct-ng/bin/ct-ng build."$(nproc)"
 popd
 
 # tarball
