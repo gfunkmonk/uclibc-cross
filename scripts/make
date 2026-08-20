@@ -80,13 +80,14 @@ fi
 
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
-    #alpha-unknown-linux-uclibc)
-        #export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
-        #export TARGET_LDFLAGS="-Wl,--no-check-sections -Wl,--no-check-sections -Wl,--defsym=__preinit_array_start=0 -Wl,--defsym=__preinit_array_end=0 -Wl,--defsym=__init_array_start=0 -Wl,--defsym=__init_array_end=0 -Wl,--defsym=__fini_array_start=0 -Wl,--defsym=__fini_array_end=0 -fno-use-linker-plugin"
-   #     export TARGET_CFLAGS="-mcpu=ev67"
-   #     export TARGET_LDFLAGS="-Wl,--no-check-sections -Wl,--no-check-sections -Wl,--defsym=__preinit_array_start=0 -Wl,--defsym=__preinit_array_end=0 -Wl,--defsym=__init_array_start=0 -Wl,--defsym=__init_array_end=0 -Wl,--defsym=__fini_array_start=0 -Wl,--defsym=__fini_array_end=0"
-   #     export EXTRA_CONFIG="1"
-   #     ;;
+    alpha-unknown-linux-uclibc)
+        export TARGET_CFLAGS="-mcpu=ev5 -mieee -fno-use-linker-plugin"
+        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        printf '\n' >> build/.config
+        printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
+        printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
+        printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+        ;;
     loongarch64-unknown-linux-uclibc)
         export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
         ;;
@@ -106,13 +107,19 @@ case "${TARGET}" in
         export TARGET_CFLAGS="-march=rv64gc -mabi=lp64d"
         ;;
     sparc-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=v9"
+        export TARGET_ASFLAGS="-32"
+        export TARGET_CFLAGS="-mcpu=v9 -m32"
+        export TARGET_LDFLAGS="-m32"
         ;;
-    #sparc64-unknown-linux-uclibc)
-    #    export TARGET_ASFLAGS="-m64"
-    #    export TARGET_CFLAGS="-mcpu=ultrasparc3 -Wno-pointer-to-int-cast"
-    #    export EXTRA_CONFIG="1"
-    #    ;;
+    sparc64-unknown-linux-uclibc)
+        export TARGET_ASFLAGS="-64"
+        export TARGET_CFLAGS="-mcpu=v9 -Wno-pointer-to-int-cast -m64"
+        export TARGET_LDFLAGS="-m64"
+        printf '\n' >> build/.config
+        printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
+        printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
+        printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+        ;;
     s390-ibm-linux-uclibc)
         export TARGET_CFLAGS="-march=z9-109 -mtune=z10 -m31"
         export TARGET_LDFLAGS="-m31"
@@ -143,6 +150,7 @@ if [[  ! -d "/mnt/tarballs" ]]; then
   sudo mkdir -p /mnt/tarballs 
   sudo chmod 0777 /mnt/tarballs
 fi
+
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 
@@ -158,12 +166,6 @@ if [[ -n "${TARGET_LDFLAGS}" ]]; then
     sed -i '/^CT_TARGET_LDFLAGS=/d' build/.config
     echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
 fi
-
-#if [[ "$my_var" -eq 1 ]]; then
-    echo 'CT_ALLOW_BUILD_AS_ROOT=y' >> build/.config
-    echo 'CT_ALLOW_BUILD_AS_ROOT_SURE=y' >> build/.config
-    echo 'CT_LOG_LEVEL_MAX="ALL"' >> build/.config
-#		fi
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
