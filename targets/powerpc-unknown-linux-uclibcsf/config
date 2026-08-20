@@ -15,7 +15,7 @@ CT_CREATE_LDSO_CONF=y
 CT_CC_LANG_CXX=y
 CT_LINKER_MOLD=y
 CT_GCC_V_16=y
-CT_BINUTILS_V_2_46=y
+CT_BINUTILS_V_2_47=y
 CT_ALL_TARGET_CFLAGS="-msecure-plt"
 # Ensure these are set in your target configs
 CT_GCC_LTO=n
