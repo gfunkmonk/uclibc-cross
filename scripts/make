@@ -83,10 +83,7 @@ case "${TARGET}" in
     alpha-unknown-linux-uclibc)
         export TARGET_CFLAGS="-mcpu=ev5 -mieee -fno-use-linker-plugin"
         export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
-        printf '\n' >> build/.config
-        printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
-        printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
-        printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+        export TARGET_DEBUG="true"
         ;;
     loongarch64-unknown-linux-uclibc)
         export TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
@@ -115,10 +112,7 @@ case "${TARGET}" in
         export TARGET_ASFLAGS="-64"
         export TARGET_CFLAGS="-mcpu=v9 -Wno-pointer-to-int-cast -m64"
         export TARGET_LDFLAGS="-m64"
-        printf '\n' >> build/.config
-        printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
-        printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
-        printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+        export TARGET_DEBUG="true"
         ;;
     s390-ibm-linux-uclibc)
         export TARGET_CFLAGS="-march=z9-109 -mtune=z10 -m31"
@@ -153,6 +147,13 @@ fi
 
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
+
+if [[ "${TARGET_DEBUG}" == "true" ]]; then
+    printf '\n' >> build/.config
+    printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
+    printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
+    printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+fi
 
 if [[ -n "${TARGET_ASFLAGS}" ]]; then
     sed -i '/^CT_TARGET_ASFLAGS=/d' build/.config
