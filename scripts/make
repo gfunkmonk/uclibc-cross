@@ -81,7 +81,7 @@ fi
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
-        export TARGET_CFLAGS="-mcpu=ev5 -mieee -fno-use-linker-plugin"
+        export TARGET_CFLAGS="-mcpu=ev6 -fno-use-linker-plugin"
         export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         export TARGET_DEBUG="true"
         ;;
