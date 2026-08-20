@@ -1,4 +1,4 @@
-_+# uclibc-cross
+# $\textsf{\color{#18afd3}{uClibc-cross}}$ 
 
 This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.
 
