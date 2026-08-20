@@ -54,15 +54,29 @@ shopt -u nullglob
 popd
 
 # crosstool-ng
+# sudo mkdir -p /opt
+# sudo chmod 0777 /opt
+# sudo rm -rf /opt/ct-ng
+# pushd builder
+# ./bootstrap
+# ./configure --prefix=/opt/ct-ng
+# make -j"$(nproc)"
+# sudo make install
+# popd
+	
 sudo mkdir -p /opt
-sudo chmod 0777 /opt
-sudo rm -rf /opt/ct-ng
-pushd builder
-./bootstrap
-./configure --prefix=/opt/ct-ng
-make -j"$(nproc)"
-sudo make install
-popd
+sudo chown 0777 /opt
+export CT_BIN="/opt/ct-ng/bin/ct-ng"
+	if [ ! -f "$CT_BIN" ]; then
+    pushd builder
+    ./bootstrap
+    ./configure --prefix=/opt/ct-ng
+    make -j"$(nproc)"
+    sudo make install
+    popd
+else
+    echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
+fi
 
 EXTRA_CT_NG_ARGS=""
 case "${TARGET}" in
@@ -140,6 +154,9 @@ if [[ -n "${TARGET_LDFLAGS}" ]]; then
     sed -i '/^CT_TARGET_LDFLAGS=/d' build/.config
     echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
 fi
+
+echo "CT_ALLOW_BUILD_AS_ROOT=y" >> build/.config
+echo "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> build/.config
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
