@@ -159,11 +159,11 @@ if [[ -n "${TARGET_LDFLAGS}" ]]; then
     echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
 fi
 
-if [[ "$my_var" -eq 1 ]]; then
-    echo "CT_ALLOW_BUILD_AS_ROOT=y" >> build/.config
-    echo "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> build/.config
+#if [[ "$my_var" -eq 1 ]]; then
+    echo 'CT_ALLOW_BUILD_AS_ROOT=y' >> build/.config
+    echo 'CT_ALLOW_BUILD_AS_ROOT_SURE=y' >> build/.config
     echo 'CT_LOG_LEVEL_MAX="ALL"' >> build/.config
-fi
+#		fi
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
