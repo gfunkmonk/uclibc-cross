@@ -109,7 +109,7 @@ case "${TARGET}" in
         ;;
     sparc64-unknown-linux-uclibc)
         export TARGET_ASFLAGS="-m64"
-        export TARGET_CFLAGS="-mcpu=ultrasparc3 -m64 -Wno-pointer-to-int-cast"
+        export TARGET_CFLAGS="-mcpu=ultrasparc3 -Wno-pointer-to-int-cast"
         ;;
     s390-ibm-linux-uclibc)
         export TARGET_CFLAGS="-march=z9-109 -mtune=z10 -m31"
