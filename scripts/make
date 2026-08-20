@@ -1,4 +1,4 @@
-#!/bin/bash
+4#!/bin/bash
 
 set -e
 set -o pipefail
@@ -78,6 +78,10 @@ else
     echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
 fi
 
+# build
+rm -rf build
+mkdir -p build
+cp targets/"${TARGET}"/config build/.config
 
 # Configure tarballs directory for download caching
 if [[  ! -d "/mnt/tarballs" ]]; then
