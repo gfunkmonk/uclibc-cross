@@ -44,6 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+       target:
           - alpha-unknown-linux-uclibc
           #- hppa-unknown-linux-uclibc
           #- or1k-unknown-linux-uclibc
