@@ -1,10 +1,9 @@
 # $\textsf{\color{#18afd3}{uClibc-cross}}$ 
 
-This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.
+$\large{\textit{\color{#E4D96F}{This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.}}}$
 
-## Supported targets
 
-| Target                           | Kernel  | Binutils |   GCC  | uClibc-ng |  Mold  |
+| $\large{\textbf{\color{#DFFF00}{Target}}}$                           | $\large{\textbf{\color{#FF1DCE}{Kernel}}}$  | $\large{\textbf{\color{#F1B42F}{Binutils}}}$ |   $\large{\textbf{\color{#58A6FF}{GCC}}}$  | $\large{\textbf{\color{#55DD33}{uClibc-ng}}}$ |  $\large{\textbf{\color{#FF0800}{Mold}}}$  |
 |----------------------------------|---------|----------|--------|-----------|--------|
 | aarch64-unknown-linux-uclibc     | 6.18.41 |   2.47   | 16.2.0 |  1.0.58   | 2.42.0 |
 | aarch64-be-unknown-linux-uclibc  | 6.18.41 |   2.47   | 16.2.0 |  1.0.58   | 2.42.0 |
