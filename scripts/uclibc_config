@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+TARGET=$1
+CONFIG_FILE="build/.config"
+
+if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
+    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
+    echo "CT_LIBC_UCLIBC_CONFIG_FILE=\"$(pwd)/build/uClibc-ng.config\"" >> "$CONFIG_FILE"
+    echo "Copied uClibc-ng.config for ${TARGET}"
+fi
