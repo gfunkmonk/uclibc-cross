@@ -1,6 +1,6 @@
 # $\textsf{\color{#18afd3}{uClibc-cross}}$ 
 
-$\normalsize{\textit{\color{#E4D96F}{This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.}}}$
+$\normalsize{\textit{\color{#E4D96E}{This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.}}}$
 
 
 | $\large{\textbf{\color{#DFFF00}{Target}}}$                           | $\large{\textbf{\color{#FF1DCE}{Kernel}}}$  | $\large{\textbf{\color{#F1B42F}{Binutils}}}$ |   $\large{\textbf{\color{#58A6FF}{GCC}}}$  | $\large{\textbf{\color{#55DD33}{uClibc-ng}}}$ |  $\large{\textbf{\color{#FF0800}{Mold}}}$  |
