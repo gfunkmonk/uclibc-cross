@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 set -oe pipefail
 
@@ -21,6 +21,7 @@ PACKAGES=(
   cmake curl file flex gawk gdb git gperf help2man \
   libncurses-dev libssl-dev libtool-bin  pkg-config python3 \
   rsync texinfo unzip wget xz-utils libzstd-dev
+)
 
 # patch
 pushd builder
