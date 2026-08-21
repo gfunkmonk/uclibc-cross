@@ -79,7 +79,6 @@ rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
 	
-# Configure tarballs directory for download caching
 {
   echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"'
   echo 'CT_SAVE_TARBALLS=y'
@@ -89,16 +88,9 @@ if [[  ! -d "/mnt/tarballs" ]]; then
   sudo chmod 0777 /mnt/tarballs
 fi
 
-# build as root
-{
-  echo 'CT_ALLOW_BUILD_AS_ROOT=y'
-  echo 'CT_ALLOW_BUILD_AS_ROOT_SURE=y'
-} >>build/.config
-
-# all the logs
-{
-  echo 'CT_LOG_LEVEL_MAX="ALL"'
-} >>build/.config
+./scripts/uclibc_config "$TARGET"
+./scripts/arch_flags "$TARGET"
+./scrpts/debug_me
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
