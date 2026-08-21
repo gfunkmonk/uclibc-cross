@@ -1,7 +1,6 @@
-4#!/bin/bash
+#!/bin/bash
 
-set -e
-set -o pipefail
+set -oe pipefail
 
 if [[ $# -lt 1 || -z "$1" ]]; then
     echo "Usage: $0 <target>" >&2
@@ -31,20 +30,21 @@ find targets/ -name "*.patch" | while read -r f; do
         echo "Fixed: $f"
     fi
 done
+
 # patch
 pushd builder
 git reset --hard HEAD
 git clean -fd
 shopt -s nullglob
-UCLIBC_VER=$(grep -oP '^CT_LIBC_UCLIBC_NG_VERSION="\K[^"]+' "../targets/${TARGET}/config" 2>/dev/null || echo "1.0.58")
+UCLIBC_VER=$(grep -oP '^CT_LIBC_UCLIBC_NG_VERSION="\K[^"]+' "../targets/${TARGET}/                                                                                                           config" 2>/dev/null || echo "1.0.58")
 for i in ../targets/"${TARGET}"/*.patch; do
     if grep -qE "^\+\+\+ b/packages/" "$i"; then
         # Wrapped package patch — apply it to create the patch file in place
         patch -Np1 -i "$i"
     elif grep -qE "^\+\+\+ b/(libc|ldso|extra)/" "$i"; then
         # Raw/unwrapped package patch — copy directly for ct-ng to consume
-	mkdir -p "packages/uClibc-ng/${UCLIBC_VER}"
-	cp "$i" "packages/uClibc-ng/${UCLIBC_VER}/$(basename "$i")"
+        mkdir -p "packages/uClibc-ng/${UCLIBC_VER}"
+        cp "$i" "packages/uClibc-ng/${UCLIBC_VER}/$(basename "$i")"
     else
         # ct-ng core patch (scripts/build/arch etc.)
         patch -Np1 -i "$i"
@@ -63,12 +63,16 @@ pushd builder
 make -j"$(nproc)"
 sudo make install
 popd
-	
+
 # build
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
 # Configure tarballs directory for download caching
+if [[  ! -d "/mnt/tarballs" ]]; then
+  sudo mkdir -p /mnt/tarballs 
+  sudo chmod 0777 /mnt/tarballs
+fi
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
 pushd build
