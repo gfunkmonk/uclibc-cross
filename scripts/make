@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -oe pipefail
+set -eo pipefail
 
 if [[ $# -lt 1 || -z "$1" ]]; then
     echo "Usage: $0 <target>" >&2
@@ -17,11 +17,15 @@ fi
 # packages
 export DEBIAN_FRONTEND=noninteractive
 PACKAGES=(
-  automake bison build-essential bzip2 ca-certificates \
-  cmake curl file flex gawk gdb git gperf help2man \
-  libncurses-dev libssl-dev libtool-bin  pkg-config python3 \
+  automake bison build-essential bzip2 \
+  ca-certificates cmake curl file flex \
+  gawk gdb git gperf help2man libncurses-dev \
+  libssl-dev libtool-bin  pkg-config python3 \
   rsync texinfo unzip wget xz-utils libzstd-dev
 )
+
+sudo -E apt-get update -qy
+sudo -E apt-get install -y --no-install-recommends "${PACKAGES[@]}"
 
 # patch
 pushd builder
@@ -74,19 +78,28 @@ fi
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
-
-printf '\n' >> build/.config
-printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
-printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
-printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
 	
 # Configure tarballs directory for download caching
+{
+  echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"'
+  echo 'CT_SAVE_TARBALLS=y'
+} >>build/.config
 if [[  ! -d "/mnt/tarballs" ]]; then
   sudo mkdir -p /mnt/tarballs 
   sudo chmod 0777 /mnt/tarballs
 fi
-echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
-echo 'CT_SAVE_TARBALLS=y' >> build/.config
+
+# build as root
+{
+  echo 'CT_ALLOW_BUILD_AS_ROOT=y'
+  echo 'CT_ALLOW_BUILD_AS_ROOT_SURE=y'
+} >>build/.config
+
+# all the logs
+{
+  ech0 'CT_LOG_LEVEL_MAX="ALL"'
+} >>build/.config
+
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
 /opt/ct-ng/bin/ct-ng build."$(nproc)"
