@@ -74,32 +74,10 @@ else
     echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
 fi
 
-EXTRA_CT_NG_ARGS=""
-case "${TARGET}" in
-    alpha-unknown-linux-uclibc)
-        export TARGET_CFLAGS="--arch ev7 -mieee -fno-use-linker-plugin"
-        export TARGET_LDFLAGS="-Wl,--no-check-sections -Wl,--no-check-sections -Wl,--defsym=__preinit_array_start=0 -Wl,--defsym=__preinit_array_end=0 -Wl,--defsym=__init_array_start=0 -Wl,--defsym=__init_array_end=0 -Wl,--defsym=__fini_array_start=0 -Wl,--defsym=__fini_array_end=0 -fno-use-linker-plugin"
-        ;;
-    sparc64-unknown-linux-uclibc) 
-        export TARGET_ASFLAGS="-m64" 
-        export TARGET_CFLAGS="-mcpu=niagara -m64 -mno-app-regs -Wno-pointer-to-int-cast" 
-        #export TARGET_LDFLAGS="-m64"
-        ;;
-    *)
-        echo "Using default config settings for ${TARGET}"
-        ;;
-esac
-
 # build
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
-cp targets/"${TARGET}"/config build/.config
-if [[ -f "targets/${TARGET}/uClibc-ng.config" ]]; then
-    cp "targets/${TARGET}/uClibc-ng.config" build/uClibc-ng.config
-    echo "CT_LIBC_UCLIBC_CONFIG_FILE=\"$(pwd)/build/uClibc-ng.config\"" >> build/.config
-    echo "Copied uClibc-ng.config for ${TARGET}"
-fi	
 	
 # Configure tarballs directory for download caching
 {
@@ -121,21 +99,6 @@ fi
 {
   echo 'CT_LOG_LEVEL_MAX="ALL"'
 } >>build/.config
-
-if [[ -n "${TARGET_ASFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_ASFLAGS=/d' build/.config
-    echo "CT_TARGET_ASFLAGS=\"${TARGET_ASFLAGS}\"" >> build/.config
-fi
-
-if [[ -n "${TARGET_CFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_CFLAGS=/d' build/.config
-    echo "CT_TARGET_CFLAGS=\"${TARGET_CFLAGS}\"" >> build/.config
-fi
-
-if [[ -n "${TARGET_LDFLAGS}" ]]; then
-    sed -i '/^CT_TARGET_LDFLAGS=/d' build/.config
-    echo "CT_TARGET_LDFLAGS=\"${TARGET_LDFLAGS}\"" >> build/.config
-fi
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
