@@ -14,6 +14,15 @@ if [[ ! -d "targets/${TARGET}" ]]; then
     exit 1
 fi
 
+# packages
+sudo apt-get update -qy
+sudo apt-get install -y --no-install-recommends \
+  automake bison bzip2 ca-certificates cmake \
+  curl file flex g++ gawk gdb git gperf help2man \
+  libncurses-dev libssl-dev libtool-bin make patch \
+  pkg-config python3 rsync texinfo unzip wget xz-utils \
+  libzstd-dev
+
 # patch
 pushd builder
 git reset --hard HEAD
