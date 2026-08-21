@@ -1,4 +1,5 @@
-# $\textsf{\color{#18afd3}{uClibc-cross}}$ 
+# $\textsf{\color{#18afd3}{uClibc-cross}}$ <img width="226" height="320" alt="puppy" src="https://github.com/user-attachments/assets/94fc41c7-9880-4ae3-91c4-abd630879d94" />
+
 
 $\normalsize{\textit{\color{#E4D96E}{This is a simple, lightweight project for making cross-compilation toolchain with uclibc libc.}}}$
 
