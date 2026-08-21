@@ -68,6 +68,13 @@ popd
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
+if [[ "S{CT_EXTRA_DEBUG}" == "true" ]]; then
+    printf '\n' >> build/.config
+    printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
+    printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
+    printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
+fi
+	
 # Configure tarballs directory for download caching
 if [[  ! -d "/mnt/tarballs" ]]; then
   sudo mkdir -p /mnt/tarballs 
