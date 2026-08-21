@@ -54,44 +54,23 @@ shopt -u nullglob
 popd
 
 # crosstool-ng
-# sudo mkdir -p /opt
-# sudo chmod 0777 /opt
-# sudo rm -rf /opt/ct-ng
-# pushd builder
-# ./bootstrap
-# ./configure --prefix=/opt/ct-ng
-# make -j"$(nproc)"
-# sudo make install
-# popd
-	
 sudo mkdir -p /opt
-sudo chown 0777 /opt
-export CT_BIN="/opt/ct-ng/bin/ct-ng"
-	if [ ! -f "$CT_BIN" ]; then
-    pushd builder
-    ./bootstrap
-    ./configure --prefix=/opt/ct-ng
-    make -j"$(nproc)"
-    sudo make install
-    popd
-else
-    echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
-fi
-
+sudo chmod 0777 /opt
+sudo rm -rf /opt/ct-ng
+pushd builder
+./bootstrap
+./configure --prefix=/opt/ct-ng
+make -j"$(nproc)"
+sudo make install
+popd
+	
 # build
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
-
 # Configure tarballs directory for download caching
-if [[  ! -d "/mnt/tarballs" ]]; then
-  sudo mkdir -p /mnt/tarballs 
-  sudo chmod 0777 /mnt/tarballs
-fi
-
 echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"' >> build/.config
 echo 'CT_SAVE_TARBALLS=y' >> build/.config
-
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig
 /opt/ct-ng/bin/ct-ng build."$(nproc)"
