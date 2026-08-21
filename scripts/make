@@ -97,7 +97,7 @@ fi
 
 # all the logs
 {
-  ech0 'CT_LOG_LEVEL_MAX="ALL"'
+  echo 'CT_LOG_LEVEL_MAX="ALL"'
 } >>build/.config
 
 pushd build
