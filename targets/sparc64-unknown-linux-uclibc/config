@@ -4,7 +4,7 @@ CT_PREFIX_DIR="/opt/x-tools/${CT_TARGET}"
 # CT_LOG_PROGRESS_BAR is not set
 CT_ARCH_SPARC=y
 CT_ARCH_64=y
-CT_ARCH_ARCH="ultrasparc3"	
+CT_ARCH_ARCH="niagara"
 CT_KERNEL_LINUX=y
 CT_LINUX_V_6_18=y
 CT_LIBC_UCLIBC_NG=y
