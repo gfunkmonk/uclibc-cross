@@ -14,23 +14,6 @@ if [[ ! -d "targets/${TARGET}" ]]; then
     exit 1
 fi
 
-# packages
-sudo apt-get update -qy
-sudo apt-get install -y --no-install-recommends \
-  automake bison bzip2 ca-certificates cmake \
-  curl file flex g++ gawk gdb git gperf help2man \
-  libncurses-dev libssl-dev libtool-bin make patch \
-  pkg-config python3 rsync texinfo unzip wget xz-utils \
-  libzstd-dev
-
-# Add newline to patches without one
-find targets/ -name "*.patch" | while read -r f; do
-    if [[ $(tail -c1 "$f" | wc -l) -eq 0 ]]; then
-        echo "" >> "$f"
-        echo "Fixed: $f"
-    fi
-done
-
 # patch
 pushd builder
 git reset --hard HEAD
@@ -82,12 +65,11 @@ fi
 rm -rf build
 mkdir -p build
 cp targets/"${TARGET}"/config build/.config
-if [[ "S{CT_EXTRA_DEBUG}" == "true" ]]; then
-    printf '\n' >> build/.config
-    printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
-    printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
-    printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
-fi
+
+printf '\n' >> build/.config
+printf 'CT_ALLOW_BUILD_AS_ROOT=y\n' >> build/.config
+printf 'CT_ALLOW_BUILD_AS_ROOT_SURE=y\n' >> build/.config
+printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> build/.config
 	
 # Configure tarballs directory for download caching
 if [[  ! -d "/mnt/tarballs" ]]; then
