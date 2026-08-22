@@ -49,40 +49,18 @@ done
 shopt -u nullglob
 popd
 
-# crosstool-ng
-# sudo mkdir -p /opt
-# sudo chmod 0777 /opt
-# sudo rm -rf /opt/ct-ng
-# pushd builder
-# ./bootstrap
-# ./configure --prefix=/opt/ct-ng
-# make -j"$(nproc)"
-# sudo make install
-# popd
-	
-sudo mkdir -p /opt
-sudo chmod 0777 /opt
-export CT_BIN="/opt/ct-ng/bin/ct-ng"
-	if [ ! -f "$CT_BIN" ]; then
-    pushd builder
-    ./bootstrap
-    ./configure --prefix=/opt/ct-ng
-    make -j"$(nproc)"
-    sudo make install
-    popd
-else
-    echo -e "\x1b[92mcrosstool-ng already installed at $CT_BIN$\x1b[0m"
-fi
+######################
+# build crosstool-ng #
+######################
 
-# build
-rm -rf build
-mkdir -p build
-cp targets/"${TARGET}"/config build/.config
-	
+# ./scripts/always_build_ct-ng
+./scripts/skip_build_ct-ng
+
 {
   echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"'
   echo 'CT_SAVE_TARBALLS=y'
 } >>build/.config
+
 if [[  ! -d "/mnt/tarballs" ]]; then
   sudo mkdir -p /mnt/tarballs 
   sudo chmod 0777 /mnt/tarballs
@@ -90,7 +68,7 @@ fi
 
 ./scripts/uclibc_config "$TARGET"
 ./scripts/arch_flags "$TARGET"
-./scrpts/debug_me
+./scripts/debug_me
 
 pushd build
 /opt/ct-ng/bin/ct-ng olddefconfig

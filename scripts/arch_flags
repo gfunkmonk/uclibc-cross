@@ -10,9 +10,12 @@ TARGET_LDFLAGS=""
 
 case "${TARGET}" in
     alpha-unknown-linux-uclibc)
-        export ARCH="alpha"
-        export TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
-        export TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        TARGET_CFLAGS="-mcpu=ev67 -mieee -fno-use-linker-plugin"
+        TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
+        ;;
+    hppa-unknown-linux-uclibc)
+        TARGET_CFLAGS="-march=1.1"
+        TARGET_LDFLAGS="-Wl,--no-check-sections -fno-use-linker-plugin"
         ;;
     loongarch64-unknown-linux-uclibc)
         TARGET_CFLAGS="-march=loongarch64 -mabi=lp64d -mtune=la464"
@@ -37,7 +40,7 @@ case "${TARGET}" in
         ;;
     sparc64-unknown-linux-uclibc)
         TARGET_ASFLAGS="-m64"
-        TARGET_CFLAGS="-mcpu=ultrasparc3 -Wno-pointer-to-int-cast"
+        TARGET_CFLAGS="-mcpu=ultrasparc -Wno-pointer-to-int-cast"
         ;;
     s390-ibm-linux-uclibc)
         TARGET_CFLAGS="-march=z9-109 -m31"
