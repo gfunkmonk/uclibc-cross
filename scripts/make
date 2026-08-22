@@ -52,19 +52,23 @@ popd
 ######################
 # build crosstool-ng #
 ######################
-
-# ./scripts/always_build_ct-ng
-./scripts/skip_build_ct-ng
+rm -rf build
+mkdir -p build
+CONFIG_FILE="build/.config"
+cp targets/"${TARGET}"/config "$CONFIG_FILE"
 
 {
   echo 'CT_LOCAL_TARBALLS_DIR="/mnt/tarballs"'
   echo 'CT_SAVE_TARBALLS=y'
-} >>build/.config
+} >>"$CONFIG_FILE"
 
 if [[  ! -d "/mnt/tarballs" ]]; then
   sudo mkdir -p /mnt/tarballs 
   sudo chmod 0777 /mnt/tarballs
 fi
+
+# ./scripts/always_build_ct-ng
+./scripts/skip_build_ct-ng
 
 ./scripts/uclibc_config "$TARGET"
 ./scripts/arch_flags "$TARGET"

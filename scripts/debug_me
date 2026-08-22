@@ -3,7 +3,7 @@ set -e
 
 CONFIG_FILE="build/.config"
 
-printf "CT_ALLOW_BUILD_AS_ROOT=y" >> "$CONFIG_FILE"
-printf "CT_ALLOW_BUILD_AS_ROOT_SURE=y" >> "$CONFIG_FILE"
-printf "CT_LOG_ALL=y" >> "$CONFIG_FILE"
-printf 'CT_LOG_LEVEL_MAX="ALL"' >> "$CONFIG_FILE"
+printf "CT_ALLOW_BUILD_AS_ROOT=y\n" >> "$CONFIG_FILE"
+printf "CT_ALLOW_BUILD_AS_ROOT_SURE=y\n" >> "$CONFIG_FILE"
+printf "CT_LOG_ALL=y\n" >> "$CONFIG_FILE"
+printf 'CT_LOG_LEVEL_MAX="ALL"\n' >> "$CONFIG_FILE"
