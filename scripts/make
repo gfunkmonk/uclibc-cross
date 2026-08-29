@@ -14,7 +14,9 @@ if [[ ! -d "targets/${TARGET}" ]]; then
     exit 1
 fi
 
-# packages
+########################
+# package dependancies #
+########################
 export DEBIAN_FRONTEND=noninteractive
 PACKAGES=(
   automake bison build-essential bzip2 \
@@ -27,22 +29,21 @@ PACKAGES=(
 sudo -E apt-get update -qy
 sudo -E apt-get install -y --no-install-recommends "${PACKAGES[@]}"
 
-# patch
+###########
+# patches #
+###########
+UCLIBC_VER=$(grep -oP '^CT_LIBC_UCLIBC_NG_VERSION="\K[^"]+' "../targets/${TARGET}/                                                                                                           config" 2>/dev/null || echo "1.0.58")
 pushd builder
 git reset --hard HEAD
 git clean -fd
 shopt -s nullglob
-UCLIBC_VER=$(grep -oP '^CT_LIBC_UCLIBC_NG_VERSION="\K[^"]+' "../targets/${TARGET}/                                                                                                           config" 2>/dev/null || echo "1.0.58")
 for i in ../targets/"${TARGET}"/*.patch; do
     if grep -qE "^\+\+\+ b/packages/" "$i"; then
-        # Wrapped package patch — apply it to create the patch file in place
         patch -Np1 -i "$i"
     elif grep -qE "^\+\+\+ b/(libc|ldso|extra)/" "$i"; then
-        # Raw/unwrapped package patch — copy directly for ct-ng to consume
         mkdir -p "packages/uClibc-ng/${UCLIBC_VER}"
         cp "$i" "packages/uClibc-ng/${UCLIBC_VER}/$(basename "$i")"
     else
-        # ct-ng core patch (scripts/build/arch etc.)
         patch -Np1 -i "$i"
     fi
 done
@@ -79,7 +80,9 @@ pushd build
 /opt/ct-ng/bin/ct-ng build."$(nproc)"
 popd
 
-# tarball
+##################
+# create archive #
+##################
 sudo mv /opt/x-tools/"${TARGET}" .
 sudo chown -R root:root "${TARGET}"
 env XZ_OPT="-T0" sudo tar -cJvf "${TARGET}".tar.xz "${TARGET}"
