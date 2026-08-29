@@ -178,7 +178,7 @@ jobs:
           - x86_64-unknown-linux-uclibc
           - hppa-unknown-linux-uclibc
           - sparc-unknown-linux-uclibc
-          - m68k-unknown-linux-uclibc
+          - alpha-unknown-linux-uclibc
     steps:
       - if: '${{ inputs.freespace }}'
         name: Free Up Disk Space
@@ -543,6 +543,7 @@ jobs:
       fail-fast: false
       matrix:
         target:
+          - m68k-unknown-linux-uclibc
           - or1k-unknown-linux-uclibc
           - riscv32-unknown-linux-uclibc
           - riscv64-unknown-linux-uclibc
